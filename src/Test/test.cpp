@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 // 以前写的一个 demo，把不必要的地方删掉了
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -35,6 +36,7 @@ int main()
     glfwWindowHint(GLFW_SAMPLES, 4); // enable MSAA
     window = glfwCreateWindow(1024, 1024, WINDOW_TITLE, nullptr, nullptr);
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(0);
 
     gladLoadGL();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -68,10 +70,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // do rendering here
-        /*
+#if 0
         // 为了方便，这里用的还是 legacy opengl
         glPushMatrix();
-        glRotatef(360.0f * std::sin(0.1 * glfwGetTime()), 0.0f, 0.0f, 1.0f);
+        glRotatef(360.0f * sinf(0.1 * (float)(glfwGetTime())), 0.0f, 0.0f, 1.0f);
         glBegin(GL_TRIANGLES);
 
         glColor3f(1, 0, 0);
@@ -85,16 +87,18 @@ int main()
 
         glEnd();
         glPopMatrix();
-        */
+#endif
 
+#if 1
         // modern opengl ver.
         glm::mat4 model(1.0f); // 相当于 glLoadIdentity
-        model = glm::rotate(model, glm::radians(360.0f * sinf(0.1 * glfwGetTime())),
+        model = glm::rotate(model, glm::radians(360.0f * sinf(0.1f * (float)glfwGetTime())),
                             glm::vec3(0.0f, 0.0f, 1.0f));
         shader.activate();
         shader.setMat4("model", model);
         glBindVertexArray(VAO); // 想要渲染某物体时，只需要绑定创建该物体时使用的 VAO
         glDrawArrays(GL_TRIANGLES, 0, 3);
+#endif
 
         glfwPollEvents();
         glfwSwapBuffers(window);

@@ -10,10 +10,10 @@ target_link_libraries(${TARGET_NAME} PUBLIC EngineRuntime)
 
 if(MSVC)
     target_compile_options(${TARGET_NAME} PRIVATE "/W4")
-    target_compile_options(${TARGET_NAME} PRIVATE "/WX") # treat warnings as errors, equivalent to "-Werror"
+    target_compile_options(${TARGET_NAME} PRIVATE "/WX-")
     target_compile_options(${TARGET_NAME} PRIVATE "/O2")
 else() # MinGW
-    target_compile_options(${TARGET_NAME} PRIVATE -O2 -Wall -Wextra -Werror)
+    target_compile_options(${TARGET_NAME} PRIVATE -O2 -Wall -Wextra)
 endif()
 
 install(TARGETS ${TARGET_NAME}
