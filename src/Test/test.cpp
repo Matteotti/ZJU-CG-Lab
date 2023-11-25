@@ -7,9 +7,15 @@
 #include <chrono>
 #include <iostream>
 
+#include "Shader.h"
+
 #define WINDOW_TITLE "TEST"
 
 GLFWwindow *window;
+
+GLuint VAO, VBO;
+
+void initVertices();
 
 int main()
 {
@@ -36,6 +42,9 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
 
+    initVertices();
+    Shader shader("triangle.vshader", "triangle.fshader");
+
     // Start main loop
     std::chrono::time_point<std::chrono::steady_clock> prev, now;
     float delta_time, delta_time_avg = 0.016f, sec_cnt = 0.0f;
@@ -59,6 +68,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // do rendering here
+        /*
         // 为了方便，这里用的还是 legacy opengl
         glPushMatrix();
         glRotatef(360.0f * std::sin(0.1 * glfwGetTime()), 0.0f, 0.0f, 1.0f);
@@ -75,6 +85,16 @@ int main()
 
         glEnd();
         glPopMatrix();
+        */
+
+        // modern opengl ver.
+        glm::mat4 model(1.0f); // 相当于 glLoadIdentity
+        model = glm::rotate(model, glm::radians(360.0f * sinf(0.1 * glfwGetTime())),
+                            glm::vec3(0.0f, 0.0f, 1.0f));
+        shader.activate();
+        shader.setMat4("model", model);
+        glBindVertexArray(VAO); // 想要渲染某物体时，只需要绑定创建该物体时使用的 VAO
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -82,4 +102,29 @@ int main()
     glfwTerminate();
 
     return 0;
+}
+
+void initVertices()
+{
+    float vertices[] =
+        {// x y z | r g b
+         0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f};
+
+    // 配置 VBO。VBO 存储的是顶点数据，但没有任何额外的约束，你可以把它想象为一个普通的数组，只不过这个数组在显存里面
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // 配置 VAO。VAO 告诉 GPU 如何去解释这些数据。
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0); // x y z
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float))); // r g b
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 }
