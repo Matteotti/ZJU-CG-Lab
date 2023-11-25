@@ -1,7 +1,7 @@
 set(TARGET_NAME EngineRuntime)
-file(GLOB_RECURSE PROJ_SOURCES *.cpp *.hpp)
+file(GLOB_RECURSE ENGINE_SOURCES *.cpp *.hpp)
 
-add_library(${TARGET_NAME} ${PROJ_SOURCES})
+add_library(${TARGET_NAME} ${ENGINE_SOURCES})
 
 target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SOURCE_DIR}/3rdparty)
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
