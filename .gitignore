@@ -1,2 +1,7 @@
 .vs/
 .vscode/
+
+# zly @ZXPrism
+out/
+build/
+bin/
