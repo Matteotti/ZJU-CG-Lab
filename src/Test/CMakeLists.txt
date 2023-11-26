@@ -1,10 +1,13 @@
 set(TARGET_NAME Test)
+
 file(GLOB_RECURSE TEST_SOURCES *.cpp *.hpp)
 
 add_executable(${TARGET_NAME} ${TEST_SOURCES})
 
-target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SOURCE_DIR}/3rdparty)
-target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SOURCE_DIR}/Engine)
+set_target_properties(${TARGET_NAME} PROPERTIES FOLDER Test)
+
+target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SRC_DIR}/3rdparty)
+target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SRC_DIR}/Engine)
 
 target_link_libraries(${TARGET_NAME} PUBLIC EngineRuntime)
 
