@@ -4,6 +4,8 @@ file(GLOB_RECURSE TEST_SOURCES *.cpp *.hpp)
 
 add_executable(${TARGET_NAME} ${TEST_SOURCES})
 
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_INSTALL_PREFIX})
+
 set_target_properties(${TARGET_NAME} PROPERTIES FOLDER Test)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SRC_DIR}/3rdparty)
@@ -22,6 +24,9 @@ endif()
 install(TARGETS ${TARGET_NAME}
     RUNTIME DESTINATION ./
 )
+
+#debug info
+message(STATUS "Copying assets to ${CMAKE_INSTALL_PREFIX}")
 
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
