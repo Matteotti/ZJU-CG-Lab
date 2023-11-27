@@ -2,14 +2,23 @@ cmake_minimum_required(VERSION 3.27 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
+set(PROJ_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 project(ZJU_CG_LAB VERSION 0.0.0 LANGUAGES C CXX)
 
 set(PROJ_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(PROJ_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-#debug info
+# forbids in-source builds
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+  message(
+    FATAL_ERROR
+      "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+  )
+endif()
+
+# debug info
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 

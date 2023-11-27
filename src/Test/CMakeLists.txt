@@ -1,10 +1,9 @@
 set(TARGET_NAME Test)
+set(EXECUTABLE_OUTPUT_PATH ${PROJ_BINARY_DIR})
 
 file(GLOB_RECURSE TEST_SOURCES *.cpp *.hpp)
 
 add_executable(${TARGET_NAME} ${TEST_SOURCES})
-
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_INSTALL_PREFIX})
 
 set_target_properties(${TARGET_NAME} PROPERTIES FOLDER Test)
 
@@ -21,14 +20,10 @@ else() # MinGW
     target_compile_options(${TARGET_NAME} PRIVATE -O2 -Wall -Wextra)
 endif()
 
-install(TARGETS ${TARGET_NAME}
-    RUNTIME DESTINATION ./
-)
-
 #debug info
-message(STATUS "Copying assets to ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Copying assets to ${PROJ_BINARY_DIR}")
 
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${PROJ_ROOT_DIR}/assets 
-                ${CMAKE_INSTALL_PREFIX})
+                ${PROJ_BINARY_DIR})

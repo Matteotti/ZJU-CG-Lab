@@ -1,6 +1,6 @@
 @echo off
 
 cmake -S ./ -B build
-cmake --build build --target=install --config Release
+cmake --build build --config Release
 
 pause

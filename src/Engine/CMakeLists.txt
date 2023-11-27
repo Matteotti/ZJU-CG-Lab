@@ -24,4 +24,4 @@ endif()
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${PROJ_ROOT_DIR}/assets 
-                ${CMAKE_INSTALL_PREFIX})
+                ${PROJ_BINARY_DIR})
