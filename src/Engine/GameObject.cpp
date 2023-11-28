@@ -287,7 +287,7 @@ void GameObject::AssignID()
 /// @brief set parent of current object
 /// @param parent  parent object
 /// @param index  index of current object in parent's children list
-void GameObject::SetParent(GameObject *parent, int index = 0)
+void GameObject::SetParent(GameObject *parent, int index)
 {
     // if parent is nullptr, return
     if (parent == nullptr)
