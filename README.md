@@ -1,6 +1,6 @@
 Modern OpenGL 教程：
 
-https://learnopengl.com/
+https://learnopengl.com/<br/>
 https://learnopengl-cn.github.io/
 
 在 glfw + opengl 中使用 imgui
