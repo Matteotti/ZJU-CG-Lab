@@ -18,6 +18,9 @@ GameObject::GameObject()
     _position = glm::vec3(0.0f);
     _rotation = glm::vec3(0.0f);
     _scale = glm::vec3(1.0f);
+    _translateMatrix = glm::mat4(1.0f);
+    _rotateMatrix = glm::mat4(1.0f);
+    _scaleMatrix = glm::mat4(1.0f);
     _modelMatrix = glm::mat4(1.0f);
 
     // TODO: empty, 因为我还不太清楚modern opengl的渲染流程
@@ -48,6 +51,9 @@ GameObject::GameObject(std::string name, Mesh *mesh, Texture *texture, Material 
     _position = glm::vec3(0.0f);
     _rotation = glm::vec3(0.0f);
     _scale = glm::vec3(1.0f);
+    _translateMatrix = glm::mat4(1.0f);
+    _rotateMatrix = glm::mat4(1.0f);
+    _scaleMatrix = glm::mat4(1.0f);
     _modelMatrix = glm::mat4(1.0f);
 
     // TODO: empty, 因为我还不太清楚modern opengl的渲染流程
@@ -329,27 +335,25 @@ void GameObject::RemoveParent()
 
 void GameObject::SetPosition(glm::vec3 position)
 {
-    _modelMatrix = glm::translate(_modelMatrix, -_position);
-    _position = position;
-    _modelMatrix = glm::translate(_modelMatrix, position);
+    _translateMatrix = glm::mat4(1.0f);
+    _translateMatrix = glm::translate(_translateMatrix, position);
+    _modelMatrix = _translateMatrix * _rotateMatrix * _scaleMatrix;
 }
 
 void GameObject::SetRotation(glm::vec3 rotation)
 {
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(-_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(-_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(-_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    _rotation = rotation;
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    _modelMatrix = glm::rotate(_modelMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    _rotateMatrix = glm::mat4(1.0f);
+    _rotateMatrix = glm::rotate(_rotateMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    _rotateMatrix = glm::rotate(_rotateMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    _rotateMatrix = glm::rotate(_rotateMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    _modelMatrix = _translateMatrix * _rotateMatrix * _scaleMatrix;
 }
 
 void GameObject::SetScale(glm::vec3 scale)
 {
-    _modelMatrix = glm::scale(_modelMatrix, 1.0f / _scale);
-    _scale = scale;
-    _modelMatrix = glm::scale(_modelMatrix, scale);
+    _scaleMatrix = glm::mat4(1.0f);
+    _scaleMatrix = glm::scale(_scaleMatrix, scale);
+    _modelMatrix = _translateMatrix * _rotateMatrix * _scaleMatrix;
 }
 
 bool GameObject::operator==(const GameObject &other) const

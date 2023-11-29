@@ -61,6 +61,9 @@ private:
     glm::vec3 _position = glm::vec3(0.0f);
     glm::vec3 _rotation = glm::vec3(0.0f); // Euler Angles, x, y, z in degree
     glm::vec3 _scale = glm::vec3(1.0f);
+    glm::mat4 _translateMatrix = glm::mat4(1.0f);
+    glm::mat4 _rotateMatrix = glm::mat4(1.0f);
+    glm::mat4 _scaleMatrix = glm::mat4(1.0f);
     glm::mat4 _modelMatrix = glm::mat4(1.0f);
 
     // TODO: empty, 因为我还不太清楚modern opengl的渲染流程
