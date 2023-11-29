@@ -1,4 +1,9 @@
 # 更新信息
+11.29 yyz
+
+现在都改成ecs架构了，以后应该只要写components和systems了吧
+
+后面慢慢把gameobjects迁移过去
 
 11.28 yyz
 新写了一个GameObject的基类，引擎可以从这里开始写，比如Mesh Material Texture这三个类

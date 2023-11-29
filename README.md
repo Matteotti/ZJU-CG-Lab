@@ -12,5 +12,7 @@ imgui wiki
 
 [Home · ocornut/imgui Wiki (github.com)](https://github.com/ocornut/imgui/wiki)
 
-ECS Framework
-[一文看懂ECS架构 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/618971664)
+ECS Architecture
+[一文看懂ECS架构 - 知乎 (zhihu.com)]
+<br/>
+(https://zhuanlan.zhihu.com/p/618971664)
