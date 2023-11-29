@@ -149,6 +149,11 @@ private:
     glm::vec3 _scale = glm::vec3(1.0f);
     //缩放
 
+    glm::mat4 _translateMatrix = glm::mat4(1.0f);
+    glm::mat4 _rotateMatrix = glm::mat4(1.0f);
+    glm::mat4 _scaleMatrix = glm::mat4(1.0f);
+    //分别是平移矩阵，旋转矩阵，缩放矩阵
+    
     glm::mat4 _modelMatrix = glm::mat4(1.0f);
     //模型矩阵，可以被传入shader
 
