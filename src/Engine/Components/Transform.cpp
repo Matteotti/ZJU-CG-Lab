@@ -48,6 +48,24 @@ glm::vec3 Transform::GetRotation() const
     return _rotation;
 }
 
+glm::vec3 Transform::GetForwardDirection() const
+{
+    glm::vec3 forwardDirection = glm::vec3(0.0f, 0.0f, -1.0f);
+    return glm::normalize(glm::vec3(_rotationMatrix * glm::vec4(forwardDirection, 0.0f)));
+}
+
+glm::vec3 Transform::GetRightDirection() const
+{
+    glm::vec3 rightDirection = glm::vec3(1.0f, 0.0f, 0.0f);
+    return glm::normalize(glm::vec3(_rotationMatrix * glm::vec4(rightDirection, 0.0f)));
+}
+
+glm::vec3 Transform::GetUpDirection() const
+{
+    glm::vec3 upDirection = glm::vec3(0.0f, 1.0f, 0.0f);
+    return glm::normalize(glm::vec3(_rotationMatrix * glm::vec4(upDirection, 0.0f)));
+}
+
 glm::vec3 Transform::GetScale() const
 {
     return _scale;
