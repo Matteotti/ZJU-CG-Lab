@@ -2,21 +2,21 @@
 
 void Coordinator::Init()
 {
-    m_componentManager = std::make_unique<ComponentManager>();
-    m_systemManager = std::make_unique<SystemManager>();
-    m_entityManager = std::make_unique<EntityManager>();
+    _componentManager = std::make_unique<ComponentManager>();
+    _systemManager = std::make_unique<SystemManager>();
+    _entityManager = std::make_unique<EntityManager>();
 }
 
 Entity Coordinator::CreateEntity()
 {
-    return m_entityManager->CreateEntity();
+    return _entityManager->CreateEntity();
 }
 
 void Coordinator::DestroyEntity(Entity entity)
 {
-    m_entityManager->DestroyEntity(entity);
+    _entityManager->DestroyEntity(entity);
 
-    m_componentManager->EntityDestroyed(entity);
+    _componentManager->EntityDestroyed(entity);
 
-    m_systemManager->EntityDestroyed(entity);
+    _systemManager->EntityDestroyed(entity);
 }
