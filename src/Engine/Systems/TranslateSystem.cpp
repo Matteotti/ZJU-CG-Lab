@@ -9,7 +9,7 @@ extern Coordinator gCoordinator;
 void TranslateSystem::Update(float dt)
 {
     // Iterate over all entities with a Transform component
-    for (auto &entity : m_entities)
+    for (auto &entity : _entities)
     {
         // Get the Transform component
         auto &transform = gCoordinator.GetComponent<Transform>(entity);

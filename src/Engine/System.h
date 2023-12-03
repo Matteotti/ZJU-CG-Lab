@@ -8,7 +8,7 @@ public:
     virtual void Update(float dt) = 0;
 
 public:
-    std::set<Entity> m_entities;
+    std::set<Entity> _entities;
 };
 
 // what does system do?

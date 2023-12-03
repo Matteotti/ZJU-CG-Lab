@@ -4,7 +4,7 @@ void ComponentManager::EntityDestroyed(Entity entity)
 {
     // Notify each component array that an entity has been destroyed
     // If it has a component for that entity, it will remove it
-    for (auto const &pair : m_componentArrays)
+    for (auto const &pair : _componentArrays)
     {
         auto const &componentArray = pair.second;
 
