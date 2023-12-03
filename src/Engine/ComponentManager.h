@@ -26,8 +26,8 @@ private:
     std::unordered_map<const char *, std::shared_ptr<IComponentArray>> m_componentArrays;
     // The component type to be assigned to the next registered component - starting at 0
     ComponentType m_nextComponentType{};
-
-    // Convenience function to get the statically casted pointer to the ComponentArray of type T.
+	
+	// Convenience function to get the statically cast pointer to the ComponentArray of type T.
     template <typename T>
     std::shared_ptr<ComponentArray<T>> GetComponentArray();
 };
