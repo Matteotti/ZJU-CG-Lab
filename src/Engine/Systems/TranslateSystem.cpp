@@ -1,5 +1,9 @@
 #include "TranslateSystem.h"
 
+#include "Coordinator.h"
+#include "Components/Transform.h"
+#include "Components/Rigidbody.h"
+
 extern Coordinator gCoordinator;
 
 void TranslateSystem::Update(float dt)

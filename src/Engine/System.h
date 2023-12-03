@@ -5,8 +5,10 @@
 class System
 {
 public:
+    virtual void Update(float dt) = 0;
+
+public:
     std::set<Entity> m_entities;
-    void Update(float dt);
 };
 
 // what does system do?
