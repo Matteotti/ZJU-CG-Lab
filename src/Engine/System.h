@@ -5,7 +5,9 @@
 class System
 {
 public:
+    virtual void Init() = 0;
     virtual void Update(float dt) = 0;
+    virtual int GetPriority() const = 0;
 
 public:
     std::set<Entity> _entities;

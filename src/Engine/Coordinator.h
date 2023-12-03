@@ -14,6 +14,8 @@ public:
 
     void DestroyEntity(Entity entity);
 
+    void UpdateSystems(float dt);
+
     template <typename T>
     void RegisterComponent();
 
@@ -31,6 +33,9 @@ public:
 
     template <typename T>
     std::shared_ptr<T> RegisterSystem();
+
+    template <typename T>
+    std::shared_ptr<T> GetSystem();
     
     template <typename T>
     void SetSystemSignature(Signature signature);
@@ -41,6 +46,7 @@ private:
     std::unique_ptr<EntityManager> _entityManager;
 };
 
+extern Coordinator gCoordinator;
 
 template <typename T>
 void Coordinator::RegisterComponent()
@@ -88,6 +94,12 @@ template <typename T>
 std::shared_ptr<T> Coordinator::RegisterSystem()
 {
     return _systemManager->RegisterSystem<T>();
+}
+
+template <typename T>
+std::shared_ptr<T> Coordinator::GetSystem()
+{
+    return _systemManager->GetSystem<T>();
 }
 
 template <typename T>

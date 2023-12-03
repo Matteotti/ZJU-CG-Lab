@@ -33,3 +33,11 @@ void SystemManager::EntitySignatureChanged(Entity entity, Signature entitySignat
         }
     }
 }
+
+void SystemManager::UpdateSystems(float dt)
+{
+    for (auto &e : _updateAuxMap)
+    {
+        e.second.Update(dt);
+    }
+}

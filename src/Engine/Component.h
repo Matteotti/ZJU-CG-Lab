@@ -2,5 +2,5 @@
 #include <cstdint>
 using ComponentType = std::uint8_t;
 
-// maximun types of components
+// maximum types of components
 const ComponentType MAX_COMPONENTS = 32;

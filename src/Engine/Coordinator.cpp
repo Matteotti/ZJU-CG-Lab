@@ -20,3 +20,8 @@ void Coordinator::DestroyEntity(Entity entity)
 
     _systemManager->EntityDestroyed(entity);
 }
+
+void Coordinator::UpdateSystems(float dt)
+{
+    _systemManager->UpdateSystems(dt);
+}
