@@ -1,5 +1,25 @@
 #include "Rigidbody.h"
 
+Rigidbody::Rigidbody()
+{
+    _mass = 1.0f;
+
+    _angularVelocity = glm::vec3(0.0f);
+    _velocity = glm::vec3(0.0f);
+
+    _angularDrag = 0.0f;
+    _drag = 0.0f;
+
+    _maxAngularVelocity = 7.0f;
+    _maxVelocity = 7.0f;
+
+    _useGravity = true;
+    _gravity = glm::vec3(0.0f, -9.8f, 0.0f);
+
+    _layer = Layers::Default;
+    _layerMask = LayerMasks::All;
+}
+
 void Rigidbody::OnCollisionEnter(std::shared_ptr<Rigidbody> other)
 {
     std::cout << "OnCollisionEnter" << std::endl;
@@ -73,11 +93,6 @@ void Rigidbody::SetMass(float mass)
     _mass = mass;
 }
 
-void Rigidbody::SetMassCenter(glm::vec3 massCenter)
-{
-    _massCenter = massCenter;
-}
-
 void Rigidbody::SetAngularVelocity(glm::vec3 angularVelocity)
 {
     _angularVelocity = angularVelocity;
@@ -131,11 +146,6 @@ void Rigidbody::SetLayerMask(LayerMask layerMask)
 float Rigidbody::GetMass()
 {
     return _mass;
-}
-
-glm::vec3 Rigidbody::GetMassCenter()
-{
-    return _massCenter;
 }
 
 glm::vec3 Rigidbody::GetAngularVelocity()
