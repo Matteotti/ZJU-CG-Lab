@@ -24,11 +24,6 @@ private:
     bool _useGravity;
     glm::vec3 _gravity;
 
-    // current object's layer
-    Layer _layer;
-    // layer mask for collision detection
-    LayerMask _layerMask;
-
     // process in Update in PhysicsSystem, readOnly
     std::list<glm::vec3> _forces;
     std::list<glm::vec3> _forcesPosition;
@@ -66,8 +61,6 @@ public:
     void SetMaxVelocity(float maxVelocity);
     void SetIsUseGravity(bool useGravity);
     void SetGravity(glm::vec3 gravity);
-    void SetLayer(Layer layer);
-    void SetLayerMask(LayerMask layerMask);
 
     float GetMass();
     glm::vec3 GetAngularVelocity();
@@ -78,8 +71,6 @@ public:
     float GetMaxVelocity();
     bool IsUseGravity();
     glm::vec3 GetGravity();
-    Layer GetLayer();
-    LayerMask GetLayerMask();
 
     std::list<glm::vec3> GetForces();
     std::list<glm::vec3> GetForcesPosition();

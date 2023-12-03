@@ -133,16 +133,6 @@ void Rigidbody::SetGravity(glm::vec3 gravity)
     _gravity = gravity;
 }
 
-void Rigidbody::SetLayer(Layer layer)
-{
-    _layer = layer;
-}
-
-void Rigidbody::SetLayerMask(LayerMask layerMask)
-{
-    _layerMask = layerMask;
-}
-
 float Rigidbody::GetMass()
 {
     return _mass;
@@ -186,16 +176,6 @@ bool Rigidbody::IsUseGravity()
 glm::vec3 Rigidbody::GetGravity()
 {
     return _gravity;
-}
-
-Layer Rigidbody::GetLayer()
-{
-    return _layer;
-}
-
-LayerMask Rigidbody::GetLayerMask()
-{
-    return _layerMask;
 }
 
 std::list<glm::vec3> Rigidbody::GetForces()
