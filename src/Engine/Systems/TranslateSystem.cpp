@@ -16,6 +16,9 @@ void TranslateSystem::Update(float dt)
         auto &rigidbody = gCoordinator.GetComponent<Rigidbody>(entity);
 
         // Update the position
-        transform.Translate(rigidbody.velocity * dt);
+        transform.Translate(rigidbody.GetVelocity() * dt);
+
+        // Update the rotation
+        transform.Rotate(rigidbody.GetAngularVelocity() * dt);
     }
 }
