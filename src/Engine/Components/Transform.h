@@ -13,6 +13,9 @@ public:
 
     glm::vec3 GetPosition() const;
     glm::vec3 GetRotation() const;
+    glm::vec3 GetForwardDirection() const;
+    glm::vec3 GetRightDirection() const;
+    glm::vec3 GetUpDirection() const;
     glm::vec3 GetScale() const;
     glm::mat4 GetModelMatrix() const;
 

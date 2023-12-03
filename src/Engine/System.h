@@ -6,7 +6,7 @@ class System
 {
 public:
     std::set<Entity> m_entities;
-    void Update(float dt) override;
+    void Update(float dt);
 };
 
 // what does system do?
