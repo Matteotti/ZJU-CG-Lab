@@ -12,8 +12,6 @@ class Rigidbody
 private:
     float _mass;
 
-    glm::vec3 _massCenter;
-
     glm::vec3 _angularVelocity;
     glm::vec3 _velocity;
 
@@ -51,6 +49,8 @@ private:
     void OnCollisionStay(std::shared_ptr<Rigidbody> other);
 
 public:
+    Rigidbody();
+
     void AddForce(glm::vec3 force, float time = 0.05f);
     void AddForceAtPosition(glm::vec3 force, glm::vec3 position, float time = 0.05f);
     void AddTorque(glm::vec3 torque, float time = 0.05f);
@@ -58,7 +58,6 @@ public:
     void AddRelativeTorque(glm::vec3 force, float time = 0.05f);
 
     void SetMass(float mass);
-    void SetMassCenter(glm::vec3 massCenter);
     void SetAngularVelocity(glm::vec3 angularVelocity);
     void SetVelocity(glm::vec3 velocity);
     void SetAngularDrag(float angularDrag);
@@ -71,7 +70,6 @@ public:
     void SetLayerMask(LayerMask layerMask);
 
     float GetMass();
-    glm::vec3 GetMassCenter();
     glm::vec3 GetAngularVelocity();
     glm::vec3 GetVelocity();
     float GetAngularDrag();
