@@ -15,9 +15,6 @@ Rigidbody::Rigidbody()
 
     _useGravity = true;
     _gravity = glm::vec3(0.0f, -9.8f, 0.0f);
-
-    _layer = Layers::Default;
-    _layerMask = LayerMasks::All;
 }
 
 void Rigidbody::OnCollisionEnter(std::shared_ptr<Rigidbody> other)
