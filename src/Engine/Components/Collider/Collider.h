@@ -6,6 +6,13 @@
 #include "Others/Layer.h"
 #include "Others/PhysicsMaterial.h"
 
+enum ColliderType
+{
+    Box,
+    Sphere,
+    Other
+};
+
 class Collider
 {
 private:
@@ -18,6 +25,9 @@ private:
     // layer mask for collision detection
     LayerMask _layerMask;
 
+protected:
+    ColliderType _colliderType;
+
 public:
     Collider();
 
@@ -25,6 +35,10 @@ public:
     void SetPhysicsMaterial(std::shared_ptr<PhysicsMaterial> physicsMaterial);
     void SetLayer(Layer layer);
     void SetLayerMask(LayerMask layerMask);
+
+    ColliderType GetColliderType();
+
+    virtual bool CheckCollision(std::shared_ptr<Collider> other) = 0;
 
     bool IsEnabled();
     std::shared_ptr<PhysicsMaterial> GetPhysicsMaterial();

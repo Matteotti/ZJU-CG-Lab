@@ -40,8 +40,14 @@ LayerMask Collider::GetLayerMask()
     return _layerMask;
 }
 
+ColliderType Collider::GetColliderType()
+{
+    return _colliderType;
+}
+
 Collider::Collider()
 {
+    _colliderType = ColliderType::Other;
     _isEnabled = true;
     _physicsMaterial = std::make_shared<PhysicsMaterial>();
     _layer = Layers::Default;

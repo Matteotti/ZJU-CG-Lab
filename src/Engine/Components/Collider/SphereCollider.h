@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+#include "BoxCollider.h"
 
 class SphereCollider : public Collider
 {
@@ -15,4 +16,6 @@ public:
 
     float GetRadius();
     glm::vec3 GetCenter();
+
+    virtual bool CheckCollision(std::shared_ptr<Collider> other) override;
 };
