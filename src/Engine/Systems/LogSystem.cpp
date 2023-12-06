@@ -7,6 +7,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <iomanip>
+#include <iostream>
 
 LogSystem gLogger;
 
@@ -14,6 +15,7 @@ LogSystem::LogSystem()
 {
     _fileHandle.open(ENGINE_LOG_PATH, std::ios::trunc);
     _fileHandle.fill('0');
+    std::cout.fill('0');
 
     auto now = std::chrono::system_clock::now();
     auto tt = std::chrono::system_clock::to_time_t(now);
@@ -31,17 +33,19 @@ LogSystem::~LogSystem()
 void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 {
     static char buffer[256]; // POTENTIAL RISK OF OVERFLOW...
+    _logBuf.str("");
+    _logBuf.clear();
 
     switch (level)
     {
     case LogLevel::INFO:
-        _fileHandle << "[INFO / ";
+        _logBuf << "[INFO / ";
         break;
     case LogLevel::WARNING:
-        _fileHandle << "[WARNING / ";
+        _logBuf << "[WARNING / ";
         break;
     case LogLevel::ERROR:
-        _fileHandle << "[ERROR / ";
+        _logBuf << "[ERROR / ";
         break;
     default:
         break;
@@ -49,14 +53,18 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 
     printTime();
 
-    _fileHandle << "] <" << position << "> ";
+    _logBuf << "] <" << position << "> ";
 
     std::va_list args;
     va_start(args, fmt);
     std::sprintf(buffer, fmt, args);
     va_end(args);
 
-    _fileHandle << buffer << std::endl;
+    _logBuf << buffer << '\n';
+
+    std::string_view logMsg = _logBuf.str();
+    _fileHandle << logMsg << std::flush;
+    std::cout << logMsg << std::flush;
 }
 
 void LogSystem::printTime()
@@ -65,5 +73,5 @@ void LogSystem::printTime()
     auto tt = std::chrono::system_clock::to_time_t(now);
     auto pTime = std::localtime(&tt);
 
-    _fileHandle << std::setw(2) << pTime->tm_hour << ':' << std::setw(2) << pTime->tm_min << ':' << std::setw(2) << pTime->tm_sec;
+    _logBuf << std::setw(2) << pTime->tm_hour << ':' << std::setw(2) << pTime->tm_min << ':' << std::setw(2) << pTime->tm_sec;
 }

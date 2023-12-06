@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <sstream>
 
 #include "System.h"
 
@@ -23,6 +24,7 @@ private:
 
 private:
     std::ofstream _fileHandle;
+    std::stringstream _logBuf;
 };
 
 extern LogSystem gLogger;
