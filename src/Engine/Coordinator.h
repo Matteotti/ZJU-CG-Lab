@@ -35,8 +35,11 @@ public:
     std::shared_ptr<T> RegisterSystem();
 
     template <typename T>
+    void DestorySystem();
+
+    template <typename T>
     std::shared_ptr<T> GetSystem();
-    
+
     template <typename T>
     void SetSystemSignature(Signature signature);
 
@@ -94,6 +97,12 @@ template <typename T>
 std::shared_ptr<T> Coordinator::RegisterSystem()
 {
     return _systemManager->RegisterSystem<T>();
+}
+
+template <typename T>
+void Coordinator::DestorySystem()
+{
+    return _systemManager->DestorySystem<T>();
 }
 
 template <typename T>

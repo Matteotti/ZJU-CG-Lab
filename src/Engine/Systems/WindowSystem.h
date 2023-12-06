@@ -7,7 +7,8 @@ struct GLFWwindow;
 class WindowSystem : public System
 {
 public:
-    virtual void Init() override;
+    WindowSystem();
+    
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 

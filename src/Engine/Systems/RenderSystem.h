@@ -7,7 +7,8 @@
 class RenderSystem : public System
 {
 public:
-    virtual void Init() override;
+    RenderSystem();
+
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 

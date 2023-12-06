@@ -8,7 +8,7 @@
 
 extern Coordinator gCoordinator;
 
-void TranslateSystem::Init()
+TranslateSystem::TranslateSystem()
 {
 }
 

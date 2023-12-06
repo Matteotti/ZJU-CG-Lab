@@ -4,13 +4,13 @@
 
 #include <GLFW/glfw3.h>
 
-void WindowSystem::Init()
+WindowSystem::WindowSystem()
 {
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ENGINE_OPENGL_CONTEXT_VER_MAJOR);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ENGINE_OPENGL_CONTEXT_VER_MINOR);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_SAMPLES, 4);
 
     _window = glfwCreateWindow(ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, ENGINE_WINDOW_TITLE, nullptr, nullptr);

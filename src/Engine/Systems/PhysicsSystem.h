@@ -6,7 +6,9 @@
 
 class PhysicsSystem : public System
 {
-    virtual void Init() override;
+public:
+    PhysicsSystem();
+    
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 };

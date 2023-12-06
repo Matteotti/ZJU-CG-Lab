@@ -6,7 +6,7 @@
 
 #include "EngineSettings.h"
 
-void PhysicsSystem::Init()
+PhysicsSystem::PhysicsSystem()
 {
 }
 

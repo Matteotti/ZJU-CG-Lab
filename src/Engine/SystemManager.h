@@ -16,6 +16,9 @@ public:
     std::shared_ptr<T> RegisterSystem();
 
     template <typename T>
+    void DestorySystem();
+
+    template <typename T>
     std::shared_ptr<T> GetSystem();
 
     template <typename T>
@@ -35,7 +38,7 @@ private:
     std::unordered_map<const char *, std::shared_ptr<System>> _systems;
 
     // TODO: 增加必要的注释
-    std::map<const char*, SystemWrapper> _updateAuxMap;
+    std::map<const char *, SystemWrapper> _updateAuxMap;
 };
 
 template <typename T>
@@ -52,6 +55,16 @@ std::shared_ptr<T> SystemManager::RegisterSystem()
     _updateAuxMap.insert({typeName, SystemWrapper(system.get())});
 
     return system;
+}
+
+template <typename T>
+void SystemManager::DestorySystem()
+{
+    const char *typeName = typeid(T).name();
+
+    assert(_systems.find(typeName) != _systems.end() && "This system has not been created yet!");
+
+    _systems[typeName].reset();
 }
 
 template <typename T>

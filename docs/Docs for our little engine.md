@@ -1,4 +1,8 @@
 # 更新信息
+12.6 zly
+删除了所有的 Systems 的 `Init` 函数，将相关的逻辑移至其构造函数。
+在 `Coordinator`、`SystemManager` 中增加了 `DestorySystem` 函数。
+
 12.3 zly
 
 - 概要

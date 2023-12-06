@@ -4,6 +4,7 @@
 #include "Systems/RenderSystem.h"
 #include "Systems/TranslateSystem.h"
 #include "Systems/WindowSystem.h"
+#include "Systems/LogSystem.h"
 
 #include <chrono>
 #include <iostream>
@@ -16,9 +17,10 @@ void Engine::Init()
 
     // 注意下方的初始化顺序不能随意调换！（因为存在依赖关系）
 
-    gCoordinator.RegisterSystem<WindowSystem>()->Init();
-    gCoordinator.RegisterSystem<RenderSystem>()->Init();
-    gCoordinator.RegisterSystem<TranslateSystem>()->Init();
+    gCoordinator.RegisterSystem<LogSystem>();
+    gCoordinator.RegisterSystem<WindowSystem>();
+    gCoordinator.RegisterSystem<RenderSystem>();
+    gCoordinator.RegisterSystem<TranslateSystem>();
 }
 
 void Engine::Run()
@@ -55,6 +57,12 @@ void Engine::RunEx(const std::function<void()> &func)
 
 void Engine::Shutdown()
 {
+    // 同理，下方的销毁顺序也不能随意调换
+
+    gCoordinator.DestorySystem<TranslateSystem>();
+    gCoordinator.DestorySystem<RenderSystem>();
+    gCoordinator.DestorySystem<WindowSystem>();
+    gCoordinator.DestorySystem<LogSystem>();
 }
 
 float Engine::CalculateDeltaTime()
