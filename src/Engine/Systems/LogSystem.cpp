@@ -13,9 +13,9 @@ LogSystem gLogger;
 
 LogSystem::LogSystem()
 {
+    _logBuf.fill('0');
+    
     _fileHandle.open(ENGINE_LOG_PATH, std::ios::trunc);
-    _fileHandle.fill('0');
-    std::cout.fill('0');
 
     auto now = std::chrono::system_clock::now();
     auto tt = std::chrono::system_clock::to_time_t(now);
@@ -34,7 +34,6 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 {
     static char buffer[256]; // POTENTIAL RISK OF OVERFLOW...
     _logBuf.str("");
-    _logBuf.clear();
 
     switch (level)
     {
