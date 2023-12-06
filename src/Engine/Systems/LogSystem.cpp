@@ -2,11 +2,18 @@
 
 #include "EngineSettings.h"
 
+#include <chrono>
+#include <ctime>
+#include <cstdarg>
+#include <cstdio>
+#include <iomanip>
+
 LogSystem gLogger;
 
 LogSystem::LogSystem()
 {
     _fileHandle.open(ENGINE_LOG_PATH, std::ios::trunc);
+    _fileHandle.fill('0');
 
     auto now = std::chrono::system_clock::now();
     auto tt = std::chrono::system_clock::to_time_t(now);
@@ -58,5 +65,5 @@ void LogSystem::printTime()
     auto tt = std::chrono::system_clock::to_time_t(now);
     auto pTime = std::localtime(&tt);
 
-    _fileHandle << pTime->tm_hour << ':' << pTime->tm_min << ':' << pTime->tm_sec;
+    _fileHandle << std::setw(2) << pTime->tm_hour << ':' << std::setw(2) << pTime->tm_min << ':' << std::setw(2) << pTime->tm_sec;
 }
