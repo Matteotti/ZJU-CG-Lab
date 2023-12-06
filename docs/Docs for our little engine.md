@@ -1,7 +1,13 @@
 # 更新信息
-12.6 zly
-删除了所有的 Systems 的 `Init` 函数，将相关的逻辑移至其构造函数。
-在 `Coordinator`、`SystemManager` 中增加了 `DestorySystem` 函数。
+12.6 zly  
+- 删除了所有的 Systems 的 `Init` 函数，将相关的逻辑移至其构造函数。  
+- 在 `Coordinator`、`SystemManager` 中增加了 `DestorySystem` 函数。  
+- 增加了 `LogSystem` 类用于日志的输出与记录：
+  - 使用 `LOG_INFO`、`LOG_WARNING` 和 `LOG_ERROR` 这三个宏来输出不同级别的日志信息。
+  - 输出的日志同时也会自动保存至文件中。
+  - 每次启动引擎后会清空上一次的日志。
+  - 建议：尽可能多地使用日志功能，以便于 BUG 的排查和修复。
+  - **注意**： LogSystem 虽然名字里面有 "System"，但它并没有继承自 `System` 类，也就不受 ECS 的管辖——它作为一个随时都可能使用到的、工具性质的类，并没有使用 ECS 的必要，也不需要定期的 `Update`。
 
 12.3 zly
 

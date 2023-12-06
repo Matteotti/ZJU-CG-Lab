@@ -13,11 +13,12 @@ Coordinator gCoordinator;
 
 void Engine::Init()
 {
+    LOG_INFO("Initializing engine...");
+
     gCoordinator.Init();
 
     // 注意下方的初始化顺序不能随意调换！（因为存在依赖关系）
 
-    gCoordinator.RegisterSystem<LogSystem>();
     gCoordinator.RegisterSystem<WindowSystem>();
     gCoordinator.RegisterSystem<RenderSystem>();
     gCoordinator.RegisterSystem<TranslateSystem>();
@@ -25,6 +26,8 @@ void Engine::Init()
 
 void Engine::Run()
 {
+    LOG_INFO("Running engine...");
+
     auto windowSystem = gCoordinator.GetSystem<WindowSystem>();
 
     while (!windowSystem->WindowShouldClose())
@@ -57,12 +60,13 @@ void Engine::RunEx(const std::function<void()> &func)
 
 void Engine::Shutdown()
 {
+    LOG_INFO("Shutting down engine...");
+
     // 同理，下方的销毁顺序也不能随意调换
 
     gCoordinator.DestorySystem<TranslateSystem>();
     gCoordinator.DestorySystem<RenderSystem>();
     gCoordinator.DestorySystem<WindowSystem>();
-    gCoordinator.DestorySystem<LogSystem>();
 }
 
 float Engine::CalculateDeltaTime()
