@@ -1,11 +1,9 @@
 #include "RenderSystem.h"
 
 #include "EngineSettings.h"
+#include "Systems/LogSystem.h"
 
 #include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <cmath>
 
 RenderSystem::RenderSystem()
 {
@@ -48,7 +46,8 @@ void RenderSystem::InitFrameBuffer()
     // create a color attachment texture
     glGenTextures(1, &_altFramebufferTexture);
     glBindTexture(GL_TEXTURE_2D, _altFramebufferTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                 NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _altFramebufferTexture, 0);
@@ -64,24 +63,23 @@ void RenderSystem::InitFrameBuffer()
     // now actually attach it
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
-    // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+    // now that we actually created the framebuffer and added all attachments we want to check if it is actually
+    // complete now
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        // TODO: 引入更好的错误处理机制，而不是仅仅输出一条错误信息
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+        LOG_ERROR("Framebuffer is not complete!");
     }
 }
 
 void RenderSystem::InitCubeVertices()
 {
 #if 0
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glGenBuffers(1, &_cubeVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _cubeVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // 配置 VAO。VAO 告诉 GPU 如何去解释这些数据。
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    glGenVertexArrays(1, &_cubeVAO);
+    glBindVertexArray(_cubeVAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0); // x y z
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float))); // r g b

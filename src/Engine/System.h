@@ -1,13 +1,15 @@
 #pragma once
-#include <set>
 #include "Entity.h"
+#include <set>
 
 class System
 {
 public:
     virtual void Update(float dt) = 0;
     virtual int GetPriority() const = 0;
-    virtual ~System(){}
+    virtual ~System()
+    {
+    }
 
 public:
     std::set<Entity> _entities;

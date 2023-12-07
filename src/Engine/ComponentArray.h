@@ -1,9 +1,8 @@
 #pragma once
-#include <cassert>
-#include <array>
-#include <unordered_map>
 #include "Entity.h"
-#include "Component.h"
+#include <array>
+#include <cassert>
+#include <unordered_map>
 
 class IComponentArray
 {
@@ -38,11 +37,11 @@ private:
     size_t _size;
 };
 
-
 template <typename T>
 void ComponentArray<T>::InsertData(Entity entity, T component)
 {
-    assert(_entityToIndexMap.find(entity) == _entityToIndexMap.end() && "Component added to same entity more than once.");
+    assert(_entityToIndexMap.find(entity) == _entityToIndexMap.end() &&
+           "Component added to same entity more than once.");
 
     // Put new entry at end and update the maps
     size_t newIndex = _size;

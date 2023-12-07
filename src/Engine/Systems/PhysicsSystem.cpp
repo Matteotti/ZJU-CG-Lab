@@ -1,8 +1,8 @@
 #include "Systems/PhysicsSystem.h"
 
-#include "Components/Rigidbody.h"
 #include "Components/Collider/BoxCollider.h"
 #include "Components/Collider/SphereCollider.h"
+#include "Components/Rigidbody.h"
 
 #include "EngineSettings.h"
 

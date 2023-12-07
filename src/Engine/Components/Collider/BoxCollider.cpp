@@ -1,5 +1,8 @@
 #include "BoxCollider.h"
 
+#include "SphereCollider.h"
+#include "Tools/Tools.h"
+
 BoxCollider::BoxCollider()
 {
     _colliderType = ColliderType::Box;
@@ -76,7 +79,8 @@ bool BoxCollider::CheckCollision(std::shared_ptr<Collider> other)
             std::vector<glm::vec3> boxVertices1 = GetVertices();
             std::vector<glm::vec3> boxVertices2 = std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices();
             std::vector<glm::vec3> allVertices = GetVertices();
-            allVertices.insert(allVertices.end(), std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices().begin(), std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices().end());
+            allVertices.insert(allVertices.end(), std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices().begin(),
+                               std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices().end());
 
             float boxProjectionLength1 = ToolFunctions::GetProjectionLength(_axis[i], boxVertices1);
             float boxProjectionLength2 = ToolFunctions::GetProjectionLength(_axis[i], boxVertices2);
@@ -95,7 +99,9 @@ bool BoxCollider::CheckCollision(std::shared_ptr<Collider> other)
         for (int i = 0; i < _axis.size(); i++)
         {
             std::vector<glm::vec3> boxVertices = GetVertices();
-            std::vector<glm::vec3> sphereVertices = ToolFunctions::GetSphereProjectionVertices(std::dynamic_pointer_cast<SphereCollider>(other)->GetCenter(), std::dynamic_pointer_cast<SphereCollider>(other)->GetRadius(), _axis[i]);
+            std::vector<glm::vec3> sphereVertices = ToolFunctions::GetSphereProjectionVertices(
+                std::dynamic_pointer_cast<SphereCollider>(other)->GetCenter(),
+                std::dynamic_pointer_cast<SphereCollider>(other)->GetRadius(), _axis[i]);
             std::vector<glm::vec3> allVertices = GetVertices();
             allVertices.insert(allVertices.end(), sphereVertices.begin(), sphereVertices.end());
 

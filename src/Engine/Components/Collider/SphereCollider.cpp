@@ -1,5 +1,7 @@
 #include "SphereCollider.h"
 
+#include "Tools/Tools.h"
+
 #include <vector>
 
 SphereCollider::SphereCollider()
@@ -51,7 +53,8 @@ bool SphereCollider::CheckCollision(std::shared_ptr<Collider> other)
         for (int i = 0; i < axis.size(); i++)
         {
             std::vector<glm::vec3> boxVertices = std::dynamic_pointer_cast<BoxCollider>(other)->GetVertices();
-            std::vector<glm::vec3> sphereVertices = ToolFunctions::GetSphereProjectionVertices(_center, _radius, axis[i]);
+            std::vector<glm::vec3> sphereVertices =
+                ToolFunctions::GetSphereProjectionVertices(_center, _radius, axis[i]);
             std::vector<glm::vec3> allVertices = boxVertices;
             allVertices.insert(allVertices.end(), sphereVertices.begin(), sphereVertices.end());
 

@@ -1,7 +1,7 @@
 #pragma once
-#include <cstdint>
-#include <bitset>
 #include "Component.h"
+#include <bitset>
+#include <cstdint>
 
 using Entity = std::uint32_t;
 

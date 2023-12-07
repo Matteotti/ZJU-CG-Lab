@@ -8,7 +8,6 @@ class RenderSystem : public System
 {
 public:
     RenderSystem();
-
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 
@@ -20,5 +19,5 @@ public:
 
 private:
     GLuint _altFramebuffer, _altFramebufferTexture;
-    GLuint _cubeVAO, _cubeVBO;
+    GLuint _cubeVAO, _cubeVBO; // built-in mesh MESH_CUBE ??
 };

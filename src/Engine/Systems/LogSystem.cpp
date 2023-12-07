@@ -3,9 +3,9 @@
 #include "EngineSettings.h"
 
 #include <chrono>
-#include <ctime>
 #include <cstdarg>
 #include <cstdio>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
 
@@ -14,14 +14,15 @@ LogSystem gLogger;
 LogSystem::LogSystem()
 {
     _logBuf.fill('0');
-    
+
     _fileHandle.open(ENGINE_LOG_PATH, std::ios::trunc);
 
     auto now = std::chrono::system_clock::now();
     auto tt = std::chrono::system_clock::to_time_t(now);
     auto pTime = std::localtime(&tt);
 
-    _fileHandle << "EngineLog -> " << pTime->tm_year + 1900 << '/' << pTime->tm_mon + 1 << '/' << pTime->tm_mday << std::endl;
+    _fileHandle << "EngineLog -> " << pTime->tm_year + 1900 << '/' << pTime->tm_mon + 1 << '/' << pTime->tm_mday
+                << std::endl;
 }
 
 LogSystem::~LogSystem()
@@ -61,7 +62,7 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 
     _logBuf << buffer << '\n';
 
-    std::string_view logMsg = _logBuf.str();
+    std::string logMsg = _logBuf.str();
     _fileHandle << logMsg << std::flush;
     std::cout << logMsg << std::flush;
 }
@@ -72,5 +73,6 @@ void LogSystem::printTime()
     auto tt = std::chrono::system_clock::to_time_t(now);
     auto pTime = std::localtime(&tt);
 
-    _logBuf << std::setw(2) << pTime->tm_hour << ':' << std::setw(2) << pTime->tm_min << ':' << std::setw(2) << pTime->tm_sec;
+    _logBuf << std::setw(2) << pTime->tm_hour << ':' << std::setw(2) << pTime->tm_min << ':' << std::setw(2)
+            << pTime->tm_sec;
 }

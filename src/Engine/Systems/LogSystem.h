@@ -2,8 +2,6 @@
 #include <fstream>
 #include <sstream>
 
-#include "System.h"
-
 enum class LogLevel
 {
     INFO,

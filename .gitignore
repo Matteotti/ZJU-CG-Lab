@@ -8,3 +8,4 @@ cmake-build-release/
 out/
 build/
 bin/
+.cache/

@@ -1,7 +1,7 @@
 #pragma once
-#include <queue>
-#include <array>
 #include "Entity.h"
+#include <array>
+#include <queue>
 
 class EntityManager
 {

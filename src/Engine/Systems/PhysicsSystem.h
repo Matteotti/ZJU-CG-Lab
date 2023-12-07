@@ -8,7 +8,7 @@ class PhysicsSystem : public System
 {
 public:
     PhysicsSystem();
-    
+
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 };

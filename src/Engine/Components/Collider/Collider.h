@@ -1,10 +1,9 @@
 #pragma once
 
-#include <memory>
-
-#include "glm/glm.hpp"
 #include "Others/Layer.h"
 #include "Others/PhysicsMaterial.h"
+
+#include <memory>
 
 enum ColliderType
 {

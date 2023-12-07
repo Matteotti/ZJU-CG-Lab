@@ -1,13 +1,12 @@
 #include "Engine.h"
 
 #include "Coordinator.h"
+#include "Systems/LogSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/TranslateSystem.h"
 #include "Systems/WindowSystem.h"
-#include "Systems/LogSystem.h"
 
 #include <chrono>
-#include <iostream>
 
 Coordinator gCoordinator;
 
@@ -33,7 +32,7 @@ void Engine::Run()
     while (!windowSystem->WindowShouldClose())
     {
         float dt = CalculateDeltaTime();
-        //std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
+        // std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
 
         Tick(dt);
 
@@ -48,7 +47,7 @@ void Engine::RunEx(const std::function<void()> &func)
     while (!windowSystem->WindowShouldClose())
     {
         float dt = CalculateDeltaTime();
-        //std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
+        // std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
 
         Tick(dt);
 

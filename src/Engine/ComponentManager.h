@@ -29,7 +29,7 @@ private:
 
     // Map from type string pointer to a component
     std::unordered_map<const char *, std::shared_ptr<IComponentArray>> _componentArrays;
-    
+
     // The component type to be assigned to the next registered component - starting at 0
     ComponentType _nextComponentType{};
 

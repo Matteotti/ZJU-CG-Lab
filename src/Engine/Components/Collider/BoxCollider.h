@@ -1,10 +1,9 @@
 #pragma once
 #include "Collider.h"
-#include "SphereCollider.h"
+
+#include "glm/glm.hpp"
 
 #include <vector>
-
-#include "Tools/Tools.h"
 
 class BoxCollider : public Collider
 {

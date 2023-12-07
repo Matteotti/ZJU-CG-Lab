@@ -7,7 +7,7 @@ class SystemWrapper
 public:
     SystemWrapper() = default;
     explicit SystemWrapper(System *ptr_system);
-    
+
     void Update(float dt);
 
     bool operator<(SystemWrapper &rhs);

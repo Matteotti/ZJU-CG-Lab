@@ -1,10 +1,10 @@
 #pragma once
 #include <cassert>
-#include <memory>
-#include <map>
-#include <unordered_map>
-#include <queue>
 #include <functional>
+#include <map>
+#include <memory>
+#include <queue>
+#include <unordered_map>
 
 #include "System.h"
 #include "SystemWrapper.h"
