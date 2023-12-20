@@ -1,11 +1,11 @@
 # Last edit: 2023/12/20 Wed
-model:
+mesh:
   cube: "cube.obj"
 
 shader:
   default:
     vs: "default.vs"
-    fs: "default.vs"
+    fs: "default.fs"
 
 sound:
 

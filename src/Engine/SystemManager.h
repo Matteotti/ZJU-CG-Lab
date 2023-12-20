@@ -1,9 +1,7 @@
 #pragma once
 #include <cassert>
-#include <functional>
 #include <map>
 #include <memory>
-#include <queue>
 #include <unordered_map>
 
 #include "System.h"

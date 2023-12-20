@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 core
 
 layout(location = 0) in vec3 _coords;
 layout(location = 1) in vec3 _normal;
