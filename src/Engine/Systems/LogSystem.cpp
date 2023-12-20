@@ -57,7 +57,7 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 
     std::va_list args;
     va_start(args, fmt);
-    std::sprintf(buffer, fmt, args);
+    std::vsprintf(buffer, fmt, args);
     va_end(args);
 
     _logBuf << buffer << '\n';
