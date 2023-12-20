@@ -7,6 +7,12 @@
 #include "Systems/TranslateSystem.h"
 #include "Systems/WindowSystem.h"
 
+#include "Components/Mesh.h"
+#include "Components/Rigidbody.h"
+#include "Components/Shader.h"
+#include "Components/Texture.h"
+#include "Components/Transform.h"
+
 Coordinator gCoordinator;
 
 void Engine::Init()
@@ -17,10 +23,16 @@ void Engine::Init()
 
     // 注意下方的初始化顺序不能随意调换！（因为存在依赖关系）
 
-    gCoordinator.RegisterSystem<WindowSystem>();
-    gCoordinator.RegisterSystem<RenderSystem>();
-    gCoordinator.RegisterSystem<ResourceSystem>();
-    gCoordinator.RegisterSystem<TranslateSystem>();
+    gCoordinator.RegisterComponent<Mesh>();
+    gCoordinator.RegisterComponent<Shader>();
+    gCoordinator.RegisterComponent<Texture>();
+    gCoordinator.RegisterComponent<Transform>();
+    gCoordinator.RegisterComponent<Rigidbody>();
+
+    gCoordinator.RegisterSystem<WindowSystem>()->Init();
+    gCoordinator.RegisterSystem<RenderSystem>()->Init();
+    gCoordinator.RegisterSystem<ResourceSystem>()->Init();
+    gCoordinator.RegisterSystem<TranslateSystem>()->Init();
 
     gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
 }

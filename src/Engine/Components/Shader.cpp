@@ -2,6 +2,11 @@
 
 #include <glad/glad.h>
 
+unsigned Shader::GetProgram()
+{
+    return _program;
+}
+
 void Shader::SetProgram(unsigned program)
 {
     _program = program;

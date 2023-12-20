@@ -2,7 +2,10 @@
 #include "Entity.h"
 #include <array>
 #include <cassert>
+#include <typeinfo>
 #include <unordered_map>
+
+#include "Systems/LogSystem.h"
 
 class IComponentArray
 {

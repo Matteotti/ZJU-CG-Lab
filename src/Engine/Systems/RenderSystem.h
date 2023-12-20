@@ -7,17 +7,21 @@
 class RenderSystem : public System
 {
 public:
-    RenderSystem();
+    virtual void Init() override;
+    virtual void Shutdown() override;
+
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 
     void InitOpenGL();
     void InitFrameBuffer();
-    void InitCubeVertices();
 
-    GLuint GetFrameAltFramebufferTexture();
+    void BeginFrame();
+    void Render();
+    void EndFrame();
+
+    GLuint GetPostProcFramebufferTexture();
 
 private:
-    GLuint _altFramebuffer, _altFramebufferTexture;
-    GLuint _cubeVAO, _cubeVBO; // built-in mesh MESH_CUBE ??
+    GLuint _postProcFramebuffer, _postProcFramebufferTexture;
 };

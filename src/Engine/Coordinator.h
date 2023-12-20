@@ -40,8 +40,8 @@ public:
     template <typename T>
     std::shared_ptr<T> GetSystem();
 
-    template <typename T>
-    void SetSystemSignature(Signature signature);
+    template <typename T, typename Tcomp>
+    void AddSystemSignature();
 
 private:
     std::unique_ptr<ComponentManager> _componentManager;
@@ -111,8 +111,8 @@ std::shared_ptr<T> Coordinator::GetSystem()
     return _systemManager->GetSystem<T>();
 }
 
-template <typename T>
-void Coordinator::SetSystemSignature(Signature signature)
+template <typename T, typename Tcomp>
+void Coordinator::AddSystemSignature()
 {
-    _systemManager->SetSignature<T>(signature);
+    _systemManager->AddSignature<T, Tcomp>();
 }

@@ -4,6 +4,7 @@
 #include "EngineSettings.h"
 #include "Systems/LogSystem.h"
 #include <cassert>
+#include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <glad/glad.h>
@@ -12,6 +13,14 @@
 #include <filesystem>
 
 namespace fs = std::filesystem;
+
+void ResourceSystem::Init()
+{
+}
+
+void ResourceSystem::Shutdown()
+{
+}
 
 void ResourceSystem::Update(float dt)
 {
@@ -148,7 +157,7 @@ void ResourceSystem::LoadMesh(YAML::Node &root)
         _assetMap.insert({name, _meshes.size()});
         _meshes.push_back(meshComp);
 
-        LOG_INFO("Loaded mesh <%s>", name.c_str());
+        LOG_INFO("Loaded MESH <%s>", name.c_str());
     }
 }
 
@@ -237,10 +246,11 @@ void ResourceSystem::LoadShader(YAML::Node &root)
 
         Shader shaderComp;
         shaderComp.SetProgram(program);
-        _shaders.push_back(shaderComp);
+        // INSERT FIRST THEN PUSH_BACK!! (spent 20 minutes debugging this...)
         _assetMap.insert({name, _shaders.size()});
+        _shaders.push_back(shaderComp);
 
-        LOG_INFO("Loaded shader <%s>", name.c_str());
+        LOG_INFO("Loaded SHADER <%s>", name.c_str());
     }
 }
 
@@ -291,14 +301,14 @@ void ResourceSystem::LoadTexture(YAML::Node &root)
 
             Texture texComp;
             texComp.SetTextureID(textureID);
-            _textures.push_back(texComp);
             _assetMap.insert({name, _textures.size()});
+            _textures.push_back(texComp);
 
-            LOG_INFO("Loaded texture <%s>", name.c_str());
+            LOG_INFO("Loaded TEXTURE <%s>", name.c_str());
         }
         else
         {
-            LOG_WARNING("Failed to load texture <%s>", name.c_str());
+            LOG_WARNING("Failed to load TEXTURE <%s>", name.c_str());
         }
         stbi_image_free(data);
     }
@@ -306,8 +316,9 @@ void ResourceSystem::LoadTexture(YAML::Node &root)
 
 void ResourceSystem::AttachAsset(AssetType type, const std::string &resName, Entity entity)
 {
-    LOG_INFO("Attaching asset <%s> to entity [%d]", resName.c_str(), entity);
-    assert(_resMap.find(resName) != _resMap.end());
+    static std::string assetTypeStr[8]{"UNDEFINED", "MESH", "SHADER", "SOUND", "TEXTURE"};
+    LOG_INFO("Attaching %s asset <%s> to entity [%d]", assetTypeStr[(int)type].c_str(), resName.c_str(), entity);
+    assert(_assetMap.find(resName) != _assetMap.end());
 
     switch (type)
     {

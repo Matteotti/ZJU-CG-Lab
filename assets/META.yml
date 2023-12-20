@@ -1,4 +1,6 @@
 # Last edit: 2023/12/20 Wed
+# NOTE: the name of each assets SHOULD BE UNIQUE!
+
 mesh:
   cube: "cube.obj"
 
@@ -10,4 +12,4 @@ shader:
 sound:
 
 texture:
-  default: "wall.jpg"
+  wall: "wall.jpg"

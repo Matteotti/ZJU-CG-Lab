@@ -3,12 +3,16 @@
 #include "Components/Rigidbody.h"
 #include "Components/Transform.h"
 #include "Coordinator.h"
-
 #include "EngineSettings.h"
+#include "Systems/LogSystem.h"
 
-extern Coordinator gCoordinator;
+void TranslateSystem::Init()
+{
+    gCoordinator.AddSystemSignature<TranslateSystem, Rigidbody>();
+    gCoordinator.AddSystemSignature<TranslateSystem, Transform>();
+}
 
-TranslateSystem::TranslateSystem()
+void TranslateSystem::Shutdown()
 {
 }
 

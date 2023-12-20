@@ -7,6 +7,7 @@
 class Shader
 {
 public:
+    unsigned GetProgram();
     void SetProgram(unsigned program);
 
     void setMat4(const std::string &name, const glm::mat4 &matrix);

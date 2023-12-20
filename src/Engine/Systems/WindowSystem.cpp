@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 
-WindowSystem::WindowSystem()
+void WindowSystem::Init()
 {
     glfwInit();
 
@@ -19,6 +19,12 @@ WindowSystem::WindowSystem()
     _window = glfwCreateWindow(ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, ENGINE_WINDOW_TITLE, nullptr, nullptr);
     glfwMakeContextCurrent(_window);
     glfwSwapInterval(0); // 禁用垂直同步
+}
+
+void WindowSystem::Shutdown()
+{
+    glfwDestroyWindow(_window);
+    glfwTerminate();
 }
 
 void WindowSystem::Update(float dt)
