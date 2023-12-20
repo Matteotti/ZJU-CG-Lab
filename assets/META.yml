@@ -1,0 +1,13 @@
+# Last edit: 2023/12/20 Wed
+model:
+  cube: "cube.obj"
+
+shader:
+  default:
+    vs: "default.vs"
+    fs: "default.vs"
+
+sound:
+
+texture:
+  default: "wall.jpg"
