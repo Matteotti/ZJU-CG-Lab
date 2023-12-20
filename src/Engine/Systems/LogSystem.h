@@ -1,4 +1,5 @@
 #pragma once
+
 #include <fstream>
 #include <sstream>
 
@@ -8,6 +9,8 @@ enum class LogLevel
     WARNING,
     ERROR
 };
+
+class ConInterface;
 
 class LogSystem
 {
@@ -23,6 +26,7 @@ private:
 private:
     std::ofstream _fileHandle;
     std::stringstream _logBuf;
+    ConInterface *_conInterface;
 };
 
 extern LogSystem gLogger;
