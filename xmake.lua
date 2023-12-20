@@ -28,6 +28,7 @@ target("Test")
     set_warnings("all", "extra")
     add_includedirs("src/Test")
     add_files("src/Test/**.cpp")
+    add_packages("glm", "yaml-cpp", "glad")
     add_deps("EngineRuntime")
     after_build(
         function (target)

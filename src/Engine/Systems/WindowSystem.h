@@ -12,6 +12,7 @@ public:
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 
+    float CountDeltaTime();
     void EndFrame();
 
     bool WindowShouldClose();
