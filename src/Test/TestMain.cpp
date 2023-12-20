@@ -6,11 +6,21 @@ int main()
 
     engine.Init();
 
-    auto entity = gCoordinator.CreateEntity();
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
-    resSys->AttachAsset(AssetType::MESH, "cube", entity);
-    resSys->AttachAsset(AssetType::SHADER, "default", entity);
-    resSys->AttachAsset(AssetType::TEXTURE, "wall", entity);
+    for (int i = 0; i < 100000; i++)
+    {
+        auto entity = gCoordinator.CreateEntity();
+
+        resSys->AttachAsset(AssetType::MESH, "cube", entity);
+        resSys->AttachAsset(AssetType::SHADER, "default", entity);
+        resSys->AttachAsset(AssetType::TEXTURE, "wall", entity);
+
+        Transform tfComp;
+        tfComp.SetPosition({rand() % 30, rand() % 30, rand() % 30});
+        float scale = rand() / 65536.0 + 0.5;
+        tfComp.SetScale({scale, scale, scale});
+        gCoordinator.AddComponent(entity, tfComp);
+    }
 
     engine.Run();
     engine.Shutdown();

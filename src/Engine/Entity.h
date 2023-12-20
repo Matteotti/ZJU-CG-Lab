@@ -5,6 +5,6 @@
 
 using Entity = std::uint32_t;
 
-const int MAX_ENTITIES = 5000;
+constexpr int MAX_ENTITIES = 100000;
 
 using Signature = std::bitset<MAX_COMPONENTS>;

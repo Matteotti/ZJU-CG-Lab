@@ -3,6 +3,7 @@
 #include "Components/Mesh.h"
 #include "Components/Shader.h"
 #include "Components/Texture.h"
+#include "Components/Transform.h"
 #include "Coordinator.h"
 #include "Engine.h"
 #include "EntityManager.h"

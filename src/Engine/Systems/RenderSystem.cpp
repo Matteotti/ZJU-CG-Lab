@@ -3,6 +3,7 @@
 #include "Components/Mesh.h"
 #include "Components/Shader.h"
 #include "Components/Texture.h"
+#include "Components/Transform.h"
 #include "Coordinator.h"
 #include "EngineSettings.h"
 #include "Systems/LogSystem.h"
@@ -17,6 +18,7 @@ void RenderSystem::Init()
     gCoordinator.AddSystemSignature<RenderSystem, Mesh>();
     gCoordinator.AddSystemSignature<RenderSystem, Shader>();
     gCoordinator.AddSystemSignature<RenderSystem, Texture>();
+    gCoordinator.AddSystemSignature<RenderSystem, Transform>();
 
     InitOpenGL();
     InitFrameBuffer();
@@ -28,22 +30,24 @@ void RenderSystem::Shutdown()
 
 void RenderSystem::Update(float dt)
 {
-    glm::mat4 view;
-    glm::mat4 projection = glm::ortho(-4.0f, 4.0f, -4.0f, 4.0f, 0.1f, 10.0f);
+    // Only for TEST
+    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, -20.0f, 20.0f);
 
     for (auto entity : _entities)
     {
         auto &shader = gCoordinator.GetComponent<Shader>(entity);
         auto &texture = gCoordinator.GetComponent<Texture>(entity);
         auto &mesh = gCoordinator.GetComponent<Mesh>(entity);
+        auto &transform = gCoordinator.GetComponent<Transform>(entity);
 
         shader.Activate();
 
         // Only for TEST
-        view = glm::lookAt(glm::vec3(1.5f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4 model(1.0f);
-        model = glm::scale(model, glm::vec3(1.2f));
-        model = glm::rotate(model, 2 * 3.14159f * sinf(0.3 * glfwGetTime()), glm::vec3(1.0f, 1.0f, 0.0f));
+        glm::mat4 view =
+            glm::lookAt(glm::vec3(1.5f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.SetRotation(
+            {360.0f * sin(0.2 * glfwGetTime()), 360.0f * cos(0.2 * glfwGetTime()), 360.0f * sin(0.1 * glfwGetTime())});
+        auto model = transform.GetModelMatrix();
 
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
