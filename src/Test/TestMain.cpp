@@ -7,7 +7,7 @@ int main()
     engine.Init();
 
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 1000; i++)
     {
         auto entity = gCoordinator.CreateEntity();
 
