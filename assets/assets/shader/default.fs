@@ -14,5 +14,6 @@ uniform mat4 normalMatrix;
 void main() {
     float diffuse = clamp(dot(normalize(lightPos - objPos), mat3(normalMatrix) * normal), 0.0, 1.0);
     float specular = 0.0;
-    color = (ambient + diffuse + specular) * texture(tex0, texCoords);
+    color = (ambient + diffuse + specular) * vec4(1.0);
+    // USE TEXTURE: color = (ambient + diffuse + specular) * texture(tex0, texCoords);
 }

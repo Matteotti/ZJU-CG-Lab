@@ -3,6 +3,8 @@
 
 mesh:
   cube: "cube.obj"
+  teapot: "teapot.obj"
+  icosphere: "icosphere.obj"
 
 shader:
   default:

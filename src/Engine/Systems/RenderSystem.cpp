@@ -52,7 +52,7 @@ void RenderSystem::Update(float dt)
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
         shader.setFloat1("ambient", 0.2f);
-        shader.setVec3("lightPos", glm::vec3{3.0f, 3.0f, 3.0f});
+        shader.setVec3("lightPos", glm::vec3{20.0f, 20.0f, 20.0f});
         shader.setMat4("model", model);
         shader.setMat4("normalMatrix", glm::transpose(glm::inverse(model)));
 
@@ -70,7 +70,7 @@ void RenderSystem::InitOpenGL()
 {
     gladLoadGL();
     glViewport(0, 0, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glEnable(GL_DEPTH_TEST);  // 默认启用深度测试
     glEnable(GL_MULTISAMPLE); // 默认启用 MSAA 以获得更好的显示效果
 }
