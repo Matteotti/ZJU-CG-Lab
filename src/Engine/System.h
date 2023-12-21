@@ -5,6 +5,9 @@
 class System
 {
 public:
+    virtual void Init() = 0;
+    virtual void Shutdown() = 0;
+
     virtual void Update(float dt) = 0;
     virtual int GetPriority() const = 0;
     virtual ~System()

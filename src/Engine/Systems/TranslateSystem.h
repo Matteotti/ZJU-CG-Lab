@@ -5,7 +5,8 @@
 class TranslateSystem : public System
 {
 public:
-    TranslateSystem();
+    virtual void Init() override;
+    virtual void Shutdown() override;
 
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;

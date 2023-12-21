@@ -7,6 +7,12 @@
 #define ENGINE_OPENGL_CONTEXT_VER_MAJOR 4
 #define ENGINE_OPENGL_CONTEXT_VER_MINOR 6
 
+#define ENGINE_ASSET_PATH "assets"
+#define ENGINE_ASSET_META_PATH "assets/META.yml"
+#define ENGINE_ASSET_MESH_PATH "assets/mesh"
+#define ENGINE_ASSET_SHADER_PATH "assets/shader"
+#define ENGINE_ASSET_SOUND_PATH "assets/sound"
+#define ENGINE_ASSET_TEXTURE_PATH "assets/texture"
 #define ENGINE_LOG_PATH "./engine_log.txt"
 
 // Note：优先级数字越小，则越先被 Update。
@@ -14,3 +20,4 @@
 #define ENGINE_PRIORITY_TRANSLATE_SYSTEM 1
 #define ENGINE_PRIORITY_RENDER_SYSTEM 2
 #define ENGINE_PRIORITY_WINDOW_SYSTEM 3
+#define ENGINE_PRIORITY_RESOURCE_SYSTEM 3

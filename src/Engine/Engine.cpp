@@ -3,10 +3,15 @@
 #include "Coordinator.h"
 #include "Systems/LogSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/ResourceSystem.h"
 #include "Systems/TranslateSystem.h"
 #include "Systems/WindowSystem.h"
 
-#include <chrono>
+#include "Components/Mesh.h"
+#include "Components/Rigidbody.h"
+#include "Components/Shader.h"
+#include "Components/Texture.h"
+#include "Components/Transform.h"
 
 Coordinator gCoordinator;
 
@@ -18,9 +23,18 @@ void Engine::Init()
 
     // 注意下方的初始化顺序不能随意调换！（因为存在依赖关系）
 
-    gCoordinator.RegisterSystem<WindowSystem>();
-    gCoordinator.RegisterSystem<RenderSystem>();
-    gCoordinator.RegisterSystem<TranslateSystem>();
+    gCoordinator.RegisterComponent<Mesh>();
+    gCoordinator.RegisterComponent<Shader>();
+    gCoordinator.RegisterComponent<Texture>();
+    gCoordinator.RegisterComponent<Transform>();
+    gCoordinator.RegisterComponent<Rigidbody>();
+
+    gCoordinator.RegisterSystem<WindowSystem>()->Init();
+    gCoordinator.RegisterSystem<RenderSystem>()->Init();
+    gCoordinator.RegisterSystem<ResourceSystem>()->Init();
+    gCoordinator.RegisterSystem<TranslateSystem>()->Init();
+
+    gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
 }
 
 void Engine::Run()
@@ -28,13 +42,16 @@ void Engine::Run()
     LOG_INFO("Running engine...");
 
     auto windowSystem = gCoordinator.GetSystem<WindowSystem>();
+    auto renderSystem = gCoordinator.GetSystem<RenderSystem>();
 
     while (!windowSystem->WindowShouldClose())
     {
-        float dt = CalculateDeltaTime();
-        // std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
+        renderSystem->BeginFrame();
 
-        Tick(dt);
+        Tick(windowSystem->CountDeltaTime());
+
+        renderSystem->Render();
+        renderSystem->EndFrame();
 
         windowSystem->EndFrame();
     }
@@ -43,15 +60,18 @@ void Engine::Run()
 void Engine::RunEx(const std::function<void()> &func)
 {
     auto windowSystem = gCoordinator.GetSystem<WindowSystem>();
+    auto renderSystem = gCoordinator.GetSystem<RenderSystem>();
 
     while (!windowSystem->WindowShouldClose())
     {
-        float dt = CalculateDeltaTime();
-        // std::cout << "delta time: " << dt << " FPS: " << 1 / dt << std::endl;
+        renderSystem->BeginFrame();
 
-        Tick(dt);
+        Tick(windowSystem->CountDeltaTime());
 
         func();
+
+        renderSystem->Render();
+        renderSystem->EndFrame();
 
         windowSystem->EndFrame();
     }
@@ -66,25 +86,6 @@ void Engine::Shutdown()
     gCoordinator.DestorySystem<TranslateSystem>();
     gCoordinator.DestorySystem<RenderSystem>();
     gCoordinator.DestorySystem<WindowSystem>();
-}
-
-float Engine::CalculateDeltaTime()
-{
-    using tp = std::chrono::time_point<std::chrono::steady_clock>;
-    static tp prev;
-    static float deltaTime;
-
-    tp now;
-
-    now = std::chrono::steady_clock::now();
-
-    // 均值滤波：防止 delta time 的骤变
-    deltaTime = 0.9f * deltaTime +
-                0.1f * std::chrono::duration_cast<std::chrono::microseconds>(now - prev).count() / 1000000.0f;
-
-    prev = now;
-
-    return deltaTime;
 }
 
 void Engine::Tick(float dt)

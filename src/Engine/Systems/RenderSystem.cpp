@@ -1,26 +1,64 @@
 #include "RenderSystem.h"
 
+#include "Components/Mesh.h"
+#include "Components/Shader.h"
+#include "Components/Texture.h"
+#include "Components/Transform.h"
+#include "Coordinator.h"
 #include "EngineSettings.h"
 #include "Systems/LogSystem.h"
 
 #include <GLFW/glfw3.h>
 
-RenderSystem::RenderSystem()
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+void RenderSystem::Init()
 {
+    gCoordinator.AddSystemSignature<RenderSystem, Mesh>();
+    gCoordinator.AddSystemSignature<RenderSystem, Shader>();
+    gCoordinator.AddSystemSignature<RenderSystem, Texture>();
+    gCoordinator.AddSystemSignature<RenderSystem, Transform>();
+
     InitOpenGL();
     InitFrameBuffer();
-    InitCubeVertices();
+}
+
+void RenderSystem::Shutdown()
+{
 }
 
 void RenderSystem::Update(float dt)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, _altFramebuffer);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Only for TEST
+    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, -20.0f, 20.0f);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    for (auto entity : _entities)
+    {
+        auto &shader = gCoordinator.GetComponent<Shader>(entity);
+        auto &texture = gCoordinator.GetComponent<Texture>(entity);
+        auto &mesh = gCoordinator.GetComponent<Mesh>(entity);
+        auto &transform = gCoordinator.GetComponent<Transform>(entity);
+
+        shader.Activate();
+
+        // Only for TEST
+        glm::mat4 view =
+            glm::lookAt(glm::vec3(1.5f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.SetRotation(
+            {360.0f * sin(0.2 * glfwGetTime()), 360.0f * cos(0.2 * glfwGetTime()), 360.0f * sin(0.1 * glfwGetTime())});
+        auto model = transform.GetModelMatrix();
+
+        shader.setMat4("view", view);
+        shader.setMat4("projection", projection);
+        shader.setFloat1("ambient", 0.2f);
+        shader.setVec3("lightPos", glm::vec3{20.0f, 20.0f, 20.0f});
+        shader.setMat4("model", model);
+        shader.setMat4("normalMatrix", glm::transpose(glm::inverse(model)));
+
+        texture.Activate();
+        mesh.Render();
+    }
 }
 
 int RenderSystem::GetPriority() const
@@ -32,6 +70,7 @@ void RenderSystem::InitOpenGL()
 {
     gladLoadGL();
     glViewport(0, 0, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glEnable(GL_DEPTH_TEST);  // 默认启用深度测试
     glEnable(GL_MULTISAMPLE); // 默认启用 MSAA 以获得更好的显示效果
 }
@@ -40,17 +79,17 @@ void RenderSystem::InitFrameBuffer()
 {
     // codes below are copied from LearnOpenGL :)
 
-    glGenFramebuffers(1, &_altFramebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, _altFramebuffer);
+    glGenFramebuffers(1, &_postProcFramebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, _postProcFramebuffer);
 
     // create a color attachment texture
-    glGenTextures(1, &_altFramebufferTexture);
-    glBindTexture(GL_TEXTURE_2D, _altFramebufferTexture);
+    glGenTextures(1, &_postProcFramebufferTexture);
+    glBindTexture(GL_TEXTURE_2D, _postProcFramebufferTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE,
                  NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _altFramebufferTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _postProcFramebufferTexture, 0);
 
     // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
     unsigned int rbo;
@@ -71,26 +110,27 @@ void RenderSystem::InitFrameBuffer()
     }
 }
 
-void RenderSystem::InitCubeVertices()
+void RenderSystem::BeginFrame()
 {
 #if 0
-    glGenBuffers(1, &_cubeVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, _cubeVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glGenVertexArrays(1, &_cubeVAO);
-    glBindVertexArray(_cubeVAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0); // x y z
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float))); // r g b
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    glBindFramebuffer(GL_FRAMEBUFFER, _altFramebuffer);
 #endif
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-GLuint RenderSystem::GetFrameAltFramebufferTexture()
+void RenderSystem::Render()
 {
-    return _altFramebufferTexture;
+    ;
+}
+
+void RenderSystem::EndFrame()
+{
+    ;
+}
+
+GLuint RenderSystem::GetPostProcFramebufferTexture()
+{
+    return _postProcFramebufferTexture;
 }

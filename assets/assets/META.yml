@@ -1,0 +1,17 @@
+# Last edit: 2023/12/20 Wed
+# NOTE: the name of each assets SHOULD BE UNIQUE!
+
+mesh:
+  cube: "cube.obj"
+  teapot: "teapot.obj"
+  icosphere: "icosphere.obj"
+
+shader:
+  default:
+    vs: "default.vs"
+    fs: "default.fs"
+
+sound:
+
+texture:
+  wall: "wall.jpg"

@@ -1,6 +1,7 @@
 #include "LogSystem.h"
 
 #include "EngineSettings.h"
+#include "Platform/ConInterface.h"
 
 #include <chrono>
 #include <cstdarg>
@@ -13,6 +14,8 @@ LogSystem gLogger;
 
 LogSystem::LogSystem()
 {
+    _conInterface = ConInterface::getConInterface();
+
     _logBuf.fill('0');
 
     _fileHandle.open(ENGINE_LOG_PATH, std::ios::trunc);
@@ -39,12 +42,15 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
     switch (level)
     {
     case LogLevel::INFO:
+        _conInterface->SetTextColor(11);
         _logBuf << "[INFO / ";
         break;
     case LogLevel::WARNING:
+        _conInterface->SetTextColor(14);
         _logBuf << "[WARNING / ";
         break;
     case LogLevel::ERROR:
+        _conInterface->SetTextColor(12);
         _logBuf << "[ERROR / ";
         break;
     default:
@@ -57,7 +63,7 @@ void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 
     std::va_list args;
     va_start(args, fmt);
-    std::sprintf(buffer, fmt, args);
+    std::vsprintf(buffer, fmt, args);
     va_end(args);
 
     _logBuf << buffer << '\n';

@@ -7,11 +7,13 @@ struct GLFWwindow;
 class WindowSystem : public System
 {
 public:
-    WindowSystem();
+    virtual void Init() override;
+    virtual void Shutdown() override;
 
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 
+    float CountDeltaTime();
     void EndFrame();
 
     bool WindowShouldClose();

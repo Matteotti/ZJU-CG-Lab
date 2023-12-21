@@ -1,13 +1,14 @@
 #pragma once
 #include <cassert>
-#include <functional>
 #include <map>
 #include <memory>
-#include <queue>
 #include <unordered_map>
 
 #include "System.h"
 #include "SystemWrapper.h"
+
+class Coordinator;
+extern Coordinator gCoordinator;
 
 class SystemManager
 {
@@ -21,8 +22,8 @@ public:
     template <typename T>
     std::shared_ptr<T> GetSystem();
 
-    template <typename T>
-    void SetSignature(Signature signature);
+    template <typename T, typename Tcomp>
+    void AddSignature();
 
     void EntityDestroyed(Entity entity);
 
@@ -64,6 +65,7 @@ void SystemManager::DestorySystem()
 
     assert(_systems.find(typeName) != _systems.end() && "This system has not been created yet!");
 
+    _systems[typeName]->Shutdown();
     _systems[typeName].reset();
 }
 
@@ -77,13 +79,12 @@ std::shared_ptr<T> SystemManager::GetSystem()
     return std::static_pointer_cast<T>(_systems[typeName]);
 }
 
-template <typename T>
-void SystemManager::SetSignature(Signature signature)
+template <typename T, typename Tcomp>
+void SystemManager::AddSignature()
 {
     const char *typeName = typeid(T).name();
 
     assert(_systems.find(typeName) != _systems.end() && "System used before registered.");
 
-    // Set the signature for this system
-    _signatures.insert({typeName, signature});
+    _signatures[typeName].set(gCoordinator.GetComponentType<Tcomp>());
 }
