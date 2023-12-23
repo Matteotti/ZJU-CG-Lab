@@ -114,5 +114,5 @@ std::shared_ptr<T> Coordinator::GetSystem()
 template <typename T, typename Tcomp>
 void Coordinator::AddSystemSignature()
 {
-    _systemManager->AddSignature<T, Tcomp>();
+    _systemManager->AddSignature<T>(GetComponentType<Tcomp>());
 }

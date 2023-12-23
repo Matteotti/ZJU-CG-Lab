@@ -7,9 +7,6 @@
 #include "System.h"
 #include "SystemWrapper.h"
 
-class Coordinator;
-extern Coordinator gCoordinator;
-
 class SystemManager
 {
 public:
@@ -22,8 +19,8 @@ public:
     template <typename T>
     std::shared_ptr<T> GetSystem();
 
-    template <typename T, typename Tcomp>
-    void AddSignature();
+    template <typename T>
+    void AddSignature(std::uint8_t newSignature);
 
     void EntityDestroyed(Entity entity);
 
@@ -79,12 +76,12 @@ std::shared_ptr<T> SystemManager::GetSystem()
     return std::static_pointer_cast<T>(_systems[typeName]);
 }
 
-template <typename T, typename Tcomp>
-void SystemManager::AddSignature()
+template <typename T>
+void SystemManager::AddSignature(std::uint8_t newSignature)
 {
     const char *typeName = typeid(T).name();
 
     assert(_systems.find(typeName) != _systems.end() && "System used before registered.");
 
-    _signatures[typeName].set(gCoordinator.GetComponentType<Tcomp>());
+    _signatures[typeName].set(newSignature);
 }
