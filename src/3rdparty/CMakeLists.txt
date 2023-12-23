@@ -28,5 +28,7 @@ if(NOT TARGET imgui)
 endif()
 
 if(NOT TARGET yaml-cpp)
+    option(YAML_CPP_BUILD_CONTRIB OFF)
+    option(YAML_CPP_BUILD_TOOLS OFF)
     add_subdirectory(yaml-cpp)
 endif()
