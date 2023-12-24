@@ -1,5 +1,5 @@
 set(TARGET_NAME Test)
-set(EXECUTABLE_OUTPUT_PATH ${PROJ_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJ_BINARY_DIR})
 
 file(GLOB_RECURSE TEST_HEADERS *.h)
 file(GLOB_RECURSE TEST_SOURCES *.cpp *.hpp)
@@ -34,3 +34,9 @@ add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${PROJ_ROOT_DIR}/assets 
                 ${PROJ_ASSETS_DIR})
+
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    $<TARGET_FILE:${TARGET_NAME}>
+    ${PROJ_BINARY_DIR}
+)
