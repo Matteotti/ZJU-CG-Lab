@@ -19,19 +19,19 @@ Rigidbody::Rigidbody()
 
 void Rigidbody::OnCollisionEnter(std::shared_ptr<Rigidbody> other)
 {
-    std::cout << "OnCollisionEnter" << std::endl;
+    LOG_INFO("OnCollisionEnter");
     // TODO: Implement this
 }
 
 void Rigidbody::OnCollisionExit(std::shared_ptr<Rigidbody> other)
 {
-    std::cout << "OnCollisionExit" << std::endl;
+    LOG_INFO("OnCollisionExit");
     // TODO: Implement this
 }
 
 void Rigidbody::OnCollisionStay(std::shared_ptr<Rigidbody> other)
 {
-    std::cout << "OnCollisionStay" << std::endl;
+    LOG_INFO("      OnCollisionStay");
     // TODO: Implement this
 }
 

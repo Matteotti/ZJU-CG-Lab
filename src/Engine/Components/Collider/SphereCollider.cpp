@@ -94,3 +94,27 @@ bool SphereCollider::CheckCollision(std::shared_ptr<Collider> other)
         return false;
     }
 }
+
+void SphereCollider::Update()
+{
+    glm::mat4 trans = glm::mat4(1.0f);
+    // Update center
+    trans = glm::scale(trans, _scale);
+    trans = glm::rotate(trans, _rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, _rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, _rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    _center = trans * glm::vec4(_center, 1.0f);
+
+    // Update radius
+    // TODO: 把球体拓展为椭球体
+    float maxScale = _scale.x;
+    if (_scale.y > maxScale)
+    {
+        maxScale = _scale.y;
+    }
+    if (_scale.z > maxScale)
+    {
+        maxScale = _scale.z;
+    }
+    _radius *= maxScale;
+}

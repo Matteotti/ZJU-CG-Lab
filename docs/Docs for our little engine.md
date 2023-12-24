@@ -1,4 +1,10 @@
 # 更新信息
+12.24
+- 在我把球形碰撞体修改为椭球之前，球形碰撞体暂时先别用了（
+- 增加了碰撞体的`Update`函数，会根据transform自己更新碰撞体的transform，在collisionSystem开始update时调用
+- 将物理运算与碰撞检测分离为两个系统，分别是`PhysicsSystem`和`CollisionSystem`，`PhysicsSystem`负责物理运算，`CollisionSystem`负责碰撞检测
+- 把所有的优先级都后调了一位，现在collisionSystem的优先级是0
+
 12.6 zly  
 - 删除了所有的 Systems 的 `Init` 函数，将相关的逻辑移至其构造函数。  
 - 在 `Coordinator`、`SystemManager` 中增加了 `DestorySystem` 函数。  

@@ -5,8 +5,12 @@
 
 BoxCollider::BoxCollider()
 {
+    _horizontal = glm::vec3(1.0f, 0.0f, 0.0f);
+    _vertical = glm::vec3(0.0f, 1.0f, 0.0f);
     _colliderType = ColliderType::Box;
-    _size = glm::vec3(1.0f);
+    _horizontal = glm::vec3(1.0f);
+    _vertical = glm::vec3(1.0f);
+    _depth = glm::vec3(1.0f);
     _center = glm::vec3(0.0f);
     UpdateVertices();
     UpdateAxis();
@@ -14,7 +18,9 @@ BoxCollider::BoxCollider()
 
 void BoxCollider::SetSize(glm::vec3 size)
 {
-    _size = size;
+    _horizontal = glm::normalize(_horizontal) * size.x;
+    _vertical = glm::normalize(_vertical) * size.y;
+    _depth = glm::normalize(_depth) * size.z;
     UpdateVertices();
     UpdateAxis();
 }
@@ -28,7 +34,7 @@ void BoxCollider::SetCenter(glm::vec3 center)
 
 glm::vec3 BoxCollider::GetSize()
 {
-    return _size;
+    return glm::vec3(glm::length(_horizontal), glm::length(_vertical), glm::length(_depth));
 }
 
 glm::vec3 BoxCollider::GetCenter()
@@ -49,14 +55,14 @@ std::vector<glm::vec3> BoxCollider::GetAxis()
 void BoxCollider::UpdateVertices()
 {
     _vertices.clear();
-    _vertices.push_back(glm::vec3(_center.x - _size.x / 2.0f, _center.y - _size.y / 2.0f, _center.z - _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x + _size.x / 2.0f, _center.y - _size.y / 2.0f, _center.z - _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x - _size.x / 2.0f, _center.y + _size.y / 2.0f, _center.z - _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x + _size.x / 2.0f, _center.y + _size.y / 2.0f, _center.z - _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x - _size.x / 2.0f, _center.y - _size.y / 2.0f, _center.z + _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x + _size.x / 2.0f, _center.y - _size.y / 2.0f, _center.z + _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x - _size.x / 2.0f, _center.y + _size.y / 2.0f, _center.z + _size.z / 2.0f));
-    _vertices.push_back(glm::vec3(_center.x + _size.x / 2.0f, _center.y + _size.y / 2.0f, _center.z + _size.z / 2.0f));
+    _vertices.push_back(_center - _horizontal - _vertical - _depth);
+    _vertices.push_back(_center + _horizontal - _vertical - _depth);
+    _vertices.push_back(_center - _horizontal + _vertical - _depth);
+    _vertices.push_back(_center + _horizontal + _vertical - _depth);
+    _vertices.push_back(_center - _horizontal - _vertical + _depth);
+    _vertices.push_back(_center + _horizontal - _vertical + _depth);
+    _vertices.push_back(_center - _horizontal + _vertical + _depth);
+    _vertices.push_back(_center + _horizontal + _vertical + _depth);
 }
 
 void BoxCollider::UpdateAxis()
@@ -121,4 +127,18 @@ bool BoxCollider::CheckCollision(std::shared_ptr<Collider> other)
     default:
         return false;
     }
+}
+
+void BoxCollider::Update()
+{
+    glm::mat4 trans = glm::mat4(1.0f);
+    glm::scale(trans, _scale);
+    glm::rotate(trans, _rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::rotate(trans, _rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::rotate(trans, _rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    _horizontal = trans * glm::vec4(_horizontal, 1.0f);
+    _vertical = trans * glm::vec4(_vertical, 1.0f);
+    _depth = trans * glm::vec4(_depth, 1.0f);
+    UpdateVertices();
+    UpdateAxis();
 }

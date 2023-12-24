@@ -4,7 +4,7 @@
 #include "Components/Rigidbody.h"
 #include "System.h"
 
-class PhysicsSystem : public System
+class CollisionSystem : public System
 {
 public:
     virtual void Init() override;

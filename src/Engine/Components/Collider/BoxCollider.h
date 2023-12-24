@@ -1,15 +1,15 @@
 #pragma once
 #include "Collider.h"
 
-#include "glm/glm.hpp"
-
 #include <vector>
 
 class BoxCollider : public Collider
 {
 private:
-    glm::vec3 _size;
     glm::vec3 _center;
+    glm::vec3 _horizontal;
+    glm::vec3 _vertical;
+    glm::vec3 _depth;
 
     std::vector<glm::vec3> _vertices;
     std::vector<glm::vec3> _axis;
@@ -30,4 +30,5 @@ public:
     glm::vec3 GetCenter();
 
     virtual bool CheckCollision(std::shared_ptr<Collider> other) override;
+    virtual void Update() override;
 };

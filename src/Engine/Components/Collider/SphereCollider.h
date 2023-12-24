@@ -18,4 +18,5 @@ public:
     glm::vec3 GetCenter();
 
     virtual bool CheckCollision(std::shared_ptr<Collider> other) override;
+    virtual void Update() override;
 };

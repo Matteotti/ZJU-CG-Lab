@@ -1,0 +1,4 @@
+EngineLog -> 2023/12/24
+[INFO / 18:06:55] <Engine::Init> Initializing engine...
+[ERROR / 18:06:55] <ResourceSystem::LoadResource> META file does not exist!
+[INFO / 18:06:55] <ResourceSystem::AttachAsset> Attaching MESH asset <icosphere> to entity [0]
