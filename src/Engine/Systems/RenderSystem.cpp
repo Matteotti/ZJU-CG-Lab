@@ -45,8 +45,9 @@ void RenderSystem::Update(float dt)
         // Only for TEST
         glm::mat4 view =
             glm::lookAt(glm::vec3(1.5f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        transform.SetRotation(
-            {360.0f * sin(0.2 * glfwGetTime()), 360.0f * cos(0.2 * glfwGetTime()), 360.0f * sin(0.1 * glfwGetTime())});
+        // transform.SetRotation(
+        //     {360.0f * sin(0.2 * glfwGetTime()), 360.0f * cos(0.2 * glfwGetTime()), 360.0f * sin(0.1 *
+        //     glfwGetTime())});
         auto model = transform.GetModelMatrix();
 
         shader.setMat4("view", view);

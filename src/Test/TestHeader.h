@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/Mesh.h"
+#include "Components/Rigidbody.h"
 #include "Components/Shader.h"
 #include "Components/Texture.h"
 #include "Components/Transform.h"

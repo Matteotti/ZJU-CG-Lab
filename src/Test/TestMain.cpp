@@ -20,6 +20,11 @@ int main()
         float scale = 8.0;
         tfComp.SetScale({scale, scale, scale});
         gCoordinator.AddComponent(entity, tfComp);
+
+        Rigidbody rbComp;
+        // rbComp.SetVelocity({0.0f, 0, 0});
+        // rbComp.SetAngularVelocity({0.0f, 0, 0});
+        gCoordinator.AddComponent(entity, rbComp);
     }
 
     engine.Run();
