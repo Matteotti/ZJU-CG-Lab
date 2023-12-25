@@ -19,6 +19,8 @@ void WindowSystem::Init()
     _window = glfwCreateWindow(ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, ENGINE_WINDOW_TITLE, nullptr, nullptr);
     glfwMakeContextCurrent(_window);
     glfwSwapInterval(0); // 禁用垂直同步
+
+    _isFirstFrame = true;
 }
 
 void WindowSystem::Shutdown()
@@ -57,6 +59,12 @@ float WindowSystem::CountDeltaTime()
     deltaTime = 0.9f * deltaTime +
                 0.1f * std::chrono::duration_cast<std::chrono::microseconds>(now - prev).count() / 1000000.0f;
     prev = now;
+
+    if (_isFirstFrame)
+    {
+        _isFirstFrame = false;
+        deltaTime = 0.0f;
+    }
 
     return deltaTime;
 }

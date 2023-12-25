@@ -21,4 +21,5 @@ public:
 
 private:
     GLFWwindow *_window;
+    bool _isFirstFrame;
 };
