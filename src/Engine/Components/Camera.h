@@ -1,12 +1,12 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include <memory>
 
-class Camera
+class Camera : public std::enable_shared_from_this<Camera>
 {
 public:
-    Camera() = default;
-
-    ~Camera() = default;
+    Camera();
 
     std::shared_ptr<glm::mat4> GetViewMatrix();
 
@@ -18,17 +18,30 @@ public:
 
     void Translate(float x, float y, float z);
 
-    void Rotate(float pitch, float yaw, float roll); // parameters in radians
-    void SetProjectionMode(bool isOrtho);            // can use ORTHO and PERSPECTIVE macros
+    void TranslateTo(float x, float y, float z);
 
-    void LookAt(float posX, float posY, float posZ, float targetX, float targetY, float targetZ, float upX, float upY,
-                float upZ);
+    void Rotate(float x, float y, float z); // parameters in angles
+
+    void SetProjectionMode(bool isOrtho); // can use ORTHO and PERSPECTIVE macros
+
+    void LookAt(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 
     void Perspective(float fov, float aspectRatio, float near, float far);
 
+    void Ortho(float left, float right, float bottom, float top, float near, float far);
+
     void Frustum(float left, float right, float bottom, float top, float near, float far);
 
+    void SetAsCurrentSceneCamera();
+
+    void SetAsCurrentGameplayCamera();
+
 private:
+    void UpdateViewMatrix();
+
+    glm::vec3 _position;
+    glm::vec3 _target;
+    glm::vec3 _up;
     std::shared_ptr<glm::mat4> _viewMatrix;
     std::shared_ptr<glm::mat4> _projectionMatrix;
     bool _isOrtho = true; // true for ortho, false for perspective

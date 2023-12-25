@@ -17,24 +17,6 @@ Rigidbody::Rigidbody()
     _gravity = glm::vec3(0.0f, -9.8f, 0.0f);
 }
 
-void Rigidbody::OnCollisionEnter(std::shared_ptr<Rigidbody> other)
-{
-    LOG_INFO("OnCollisionEnter");
-    // TODO: Implement this
-}
-
-void Rigidbody::OnCollisionExit(std::shared_ptr<Rigidbody> other)
-{
-    LOG_INFO("OnCollisionExit");
-    // TODO: Implement this
-}
-
-void Rigidbody::OnCollisionStay(std::shared_ptr<Rigidbody> other)
-{
-    LOG_INFO("      OnCollisionStay");
-    // TODO: Implement this
-}
-
 /// @brief Add force to the Rigidbody
 /// @param force The force to add
 /// @param time The time to apply the force

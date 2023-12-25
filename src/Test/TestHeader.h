@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Components/Camera.h"
 #include "Components/Mesh.h"
 #include "Components/Rigidbody.h"
 #include "Components/Shader.h"
@@ -12,3 +13,4 @@
 #include "SystemManager.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/ResourceSystem.h"
+#include "glfw/glfw3.h"

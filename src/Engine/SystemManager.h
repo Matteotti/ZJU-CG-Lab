@@ -35,7 +35,7 @@ private:
     // Map from system type string pointer to a system pointer
     std::unordered_map<const char *, std::shared_ptr<System>> _systems;
 
-    // TODO: 增加必要的注释
+    // System map, ordered by priority
     std::map<const char *, SystemWrapper> _updateAuxMap;
 };
 

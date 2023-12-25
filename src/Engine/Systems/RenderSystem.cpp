@@ -30,8 +30,6 @@ void RenderSystem::Shutdown()
 
 void RenderSystem::Update(float dt)
 {
-    // Only for TEST
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, -20.0f, 20.0f);
 
     for (auto entity : _entities)
     {
@@ -42,13 +40,11 @@ void RenderSystem::Update(float dt)
 
         shader.Activate();
 
-        // Only for TEST
-        glm::mat4 view =
-            glm::lookAt(glm::vec3(1.5f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        // transform.SetRotation(
-        //     {360.0f * sin(0.2 * glfwGetTime()), 360.0f * cos(0.2 * glfwGetTime()), 360.0f * sin(0.1 *
-        //     glfwGetTime())});
+        // set view & projection according to camera
+
         auto model = transform.GetModelMatrix();
+        auto projection = *_currentSceneCamera->GetProjectionMatrix();
+        auto view = *_currentSceneCamera->GetViewMatrix();
 
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
@@ -65,6 +61,11 @@ void RenderSystem::Update(float dt)
 int RenderSystem::GetPriority() const
 {
     return ENGINE_PRIORITY_RENDER_SYSTEM;
+}
+
+void RenderSystem::SetCurrentCamera(std::shared_ptr<Camera> camera)
+{
+    _currentSceneCamera = std::move(camera);
 }
 
 void RenderSystem::InitOpenGL()
