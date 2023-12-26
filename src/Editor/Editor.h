@@ -2,6 +2,7 @@
 
 #include "Engine.h"
 
+#include "Entity.h"
 #include "Module/EditorModule.h"
 
 #include <memory>
@@ -17,8 +18,6 @@ public:
     void Run();
 
     void DockSpace();
-
-    void Test();
 
 private:
     Engine _engine;

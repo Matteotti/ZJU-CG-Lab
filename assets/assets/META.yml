@@ -5,6 +5,7 @@ mesh:
   cube: "cube.obj"
   teapot: "teapot.obj"
   icosphere: "icosphere.obj"
+  menger: "menger.obj"
 
 shader:
   default:

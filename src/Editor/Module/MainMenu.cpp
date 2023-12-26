@@ -1,8 +1,10 @@
 #include "MainMenu.h"
 
-#include <imgui/imgui.h>
+#include "Coordinator.h"
+#include "Systems/WindowSystem.h"
 
 #include <glad/glad.h>
+#include <imgui/imgui.h>
 
 void MainMenu::Update()
 {
@@ -34,7 +36,11 @@ void MainMenu::Update()
 
         if (ImGui::BeginMenu("\ueadb Experimental"))
         {
-            static ImVec4 color = ImVec4();
+            ImGui::SeparatorText("Frame");
+            ImGui::Text("FPS: %.0f", 1 / gCoordinator.GetSystem<WindowSystem>()->GetDeltaTime());
+
+            ImGui::SeparatorText("Screen Settings");
+            static ImVec4 color = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
             ImGui::ColorEdit3("Clear Color", (float *)&color);
             glClearColor(color.x, color.y, color.z, 1.0f);
             ImGui::EndMenu();
