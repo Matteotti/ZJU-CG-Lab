@@ -120,7 +120,8 @@ void Camera::LookAt(glm::vec3 position, glm::vec3 target, glm::vec3 up)
 void Camera::Perspective(float fov, float aspectRatio, float near, float far)
 {
     assert(!_isOrtho || "Cannot set perspective projection on orthographic camera");
-    *_projectionMatrix = glm::perspective(fov, aspectRatio, near, far);
+    // the unit of the first parameter is radian, not degree.
+    *_projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
 }
 
 void Camera::Ortho(float left, float right, float bottom, float top, float near, float far)
