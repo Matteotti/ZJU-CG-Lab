@@ -2,7 +2,7 @@ set(TARGET_NAME imgui)
 
 file(GLOB IMGUI_SOURCES ${IMGUI_PATH}/*.h ${IMGUI_PATH}/*.cpp)
 
-add_compile_definitions(IMGUI_DISABLE_DEMO_WINDOWS)
+#add_compile_definitions(IMGUI_DISABLE_DEMO_WINDOWS)
 
 add_library(${TARGET_NAME} ${IMGUI_SOURCES}
     ${IMGUI_PATH}/backends/imgui_impl_opengl3.cpp

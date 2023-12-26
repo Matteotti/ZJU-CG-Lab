@@ -14,6 +14,7 @@ public:
     virtual void Update(float dt) override;
     virtual int GetPriority() const override;
 
+    std::shared_ptr<Camera> GetCurrentCamera();
     void SetCurrentCamera(std::shared_ptr<Camera> camera);
 
     void InitOpenGL();

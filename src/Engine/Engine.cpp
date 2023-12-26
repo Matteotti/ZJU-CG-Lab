@@ -71,10 +71,10 @@ void Engine::RunEx(const std::function<void()> &func)
 
         Tick(windowSystem->CountDeltaTime());
 
-        func();
-
         renderSystem->Render();
         renderSystem->EndFrame();
+
+        func();
 
         windowSystem->EndFrame();
     }

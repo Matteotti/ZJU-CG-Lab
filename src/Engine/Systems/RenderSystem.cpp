@@ -32,7 +32,6 @@ void RenderSystem::Shutdown()
 
 void RenderSystem::Update(float dt)
 {
-
     for (auto entity : _entities)
     {
         auto &shader = gCoordinator.GetComponent<Shader>(entity);
@@ -63,6 +62,11 @@ void RenderSystem::Update(float dt)
 int RenderSystem::GetPriority() const
 {
     return ENGINE_PRIORITY_RENDER_SYSTEM;
+}
+
+std::shared_ptr<Camera> RenderSystem::GetCurrentCamera()
+{
+    return _currentSceneCamera;
 }
 
 void RenderSystem::SetCurrentCamera(std::shared_ptr<Camera> camera)
@@ -116,12 +120,16 @@ void RenderSystem::InitFrameBuffer()
 
 void RenderSystem::BeginFrame()
 {
-#if 0
-    glBindFramebuffer(GL_FRAMEBUFFER, _altFramebuffer);
-#endif
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (_editorMode)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, _postProcFramebuffer);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+    else
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 }
 
 void RenderSystem::Render()
@@ -131,7 +139,11 @@ void RenderSystem::Render()
 
 void RenderSystem::EndFrame()
 {
-    ;
+    if (_editorMode)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
 }
 
 GLuint RenderSystem::GetPostProcFramebufferTexture()

@@ -1,7 +1,8 @@
 # 更新信息
 12.26 zly
 - 给 `System::Init` 增加了 `bool editorMode` 参数
-- Editor is coming soon!
+- ~~Editor is coming soon!~~
+- 完成了 Editor 的基本框架
 
 12.25
 - 更新了Camera与Transform的交互，现在CameraSystem会根据Camera的Transform自动更新Camera的各种矩阵

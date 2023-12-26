@@ -10,6 +10,7 @@ set_target_properties(${TARGET_NAME} PROPERTIES FOLDER Editor)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SRC_DIR}/3rdparty)
 target_include_directories(${TARGET_NAME} PUBLIC ${PROJ_SRC_DIR}/Engine)
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${TARGET_NAME} PUBLIC imgui)
 target_link_libraries(${TARGET_NAME} PUBLIC EngineRuntime)

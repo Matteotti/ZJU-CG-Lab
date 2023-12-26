@@ -1,0 +1,9 @@
+#pragma once
+
+#define EDITOR_WINDOW_TITLE "Editor v0.0.0"
+#define EDITOR_FONT_ICON "assets/fonts/MaterialIcons-Regular.ttf"
+
+#define EDITOR_MODULENAME_VIEWPORT "Viewport Window"
+#define EDITOR_MODULENAME_PROPVIEW "Property Window"
+#define EDITOR_MODULENAME_SCENEMGR "Scene Window"
+#define EDITOR_MODULENAME_EXPLORER "Explorer"
