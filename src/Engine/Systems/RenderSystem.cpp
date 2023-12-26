@@ -13,8 +13,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-void RenderSystem::Init()
+void RenderSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     gCoordinator.AddSystemSignature<RenderSystem, Mesh>();
     gCoordinator.AddSystemSignature<RenderSystem, Shader>();
     gCoordinator.AddSystemSignature<RenderSystem, Texture>();

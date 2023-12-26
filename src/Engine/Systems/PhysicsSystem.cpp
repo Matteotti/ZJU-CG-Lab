@@ -5,8 +5,10 @@
 
 #include "EngineSettings.h"
 
-void PhysicsSystem::Init()
+void PhysicsSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     gCoordinator.AddSystemSignature<PhysicsSystem, Rigidbody>();
 }
 

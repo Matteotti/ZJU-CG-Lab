@@ -9,8 +9,10 @@
 
 #include "EngineSettings.h"
 
-void CollisionSystem::Init()
+void CollisionSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     gCoordinator.AddSystemSignature<CollisionSystem, Rigidbody>();
     gCoordinator.AddSystemSignature<CollisionSystem, BoxCollider>();
     gCoordinator.AddSystemSignature<CollisionSystem, Transform>();

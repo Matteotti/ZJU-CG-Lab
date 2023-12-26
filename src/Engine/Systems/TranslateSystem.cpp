@@ -6,8 +6,10 @@
 #include "EngineSettings.h"
 #include "Systems/LogSystem.h"
 
-void TranslateSystem::Init()
+void TranslateSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     gCoordinator.AddSystemSignature<TranslateSystem, Rigidbody>();
     gCoordinator.AddSystemSignature<TranslateSystem, Transform>();
 }

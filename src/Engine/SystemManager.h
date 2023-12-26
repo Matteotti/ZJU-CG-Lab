@@ -64,6 +64,8 @@ void SystemManager::DestorySystem()
 
     _systems[typeName]->Shutdown();
     _systems[typeName].reset();
+
+    // TODO: remove the destoryed system from each data structure
 }
 
 template <typename T>

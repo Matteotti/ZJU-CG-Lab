@@ -14,8 +14,9 @@
 
 namespace fs = std::filesystem;
 
-void ResourceSystem::Init()
+void ResourceSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
 }
 
 void ResourceSystem::Shutdown()

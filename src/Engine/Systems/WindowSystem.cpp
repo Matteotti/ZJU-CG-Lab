@@ -7,8 +7,10 @@
 #include <GLFW/glfw3.h>
 #include <cstdio>
 
-void WindowSystem::Init()
+void WindowSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ENGINE_OPENGL_CONTEXT_VER_MAJOR);
@@ -34,12 +36,15 @@ void WindowSystem::Update(float dt)
     static char titleBuf[128];
     static float secCnt = 0.0f;
 
-    secCnt += dt;
-    if (secCnt >= 0.5f)
+    if (!_editorMode)
     {
-        secCnt = 0;
-        std::sprintf(titleBuf, ENGINE_WINDOW_TITLE " [FPS: %.0f]", 1.0f / dt);
-        glfwSetWindowTitle(_window, titleBuf);
+        secCnt += dt;
+        if (secCnt >= 0.5f)
+        {
+            secCnt = 0;
+            std::sprintf(titleBuf, ENGINE_WINDOW_TITLE " [FPS: %.0f]", 1.0f / dt);
+            glfwSetWindowTitle(_window, titleBuf);
+        }
     }
 }
 
@@ -52,21 +57,25 @@ float WindowSystem::CountDeltaTime()
 {
     using tp = std::chrono::time_point<std::chrono::steady_clock>;
     static tp prev;
-    static float deltaTime;
 
     tp now;
     now = std::chrono::steady_clock::now();
-    deltaTime = 0.9f * deltaTime +
-                0.1f * std::chrono::duration_cast<std::chrono::microseconds>(now - prev).count() / 1000000.0f;
+    _deltaTime = 0.9f * _deltaTime +
+                 0.1f * std::chrono::duration_cast<std::chrono::microseconds>(now - prev).count() / 1000000.0f;
     prev = now;
 
     if (_isFirstFrame)
     {
         _isFirstFrame = false;
-        deltaTime = 0.0f;
+        _deltaTime = 0.0f;
     }
 
-    return deltaTime;
+    return _deltaTime;
+}
+
+float WindowSystem::GetDeltaTime() const
+{
+    return _deltaTime;
 }
 
 void WindowSystem::EndFrame()

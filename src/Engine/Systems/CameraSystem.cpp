@@ -5,8 +5,10 @@
 #include "Coordinator.h"
 #include "EngineSettings.h"
 
-void CameraSystem::Init()
+void CameraSystem::Init(bool editorMode)
 {
+    Super::Init(editorMode);
+
     gCoordinator.AddSystemSignature<CameraSystem, Camera>();
     gCoordinator.AddSystemSignature<CameraSystem, Transform>();
 }

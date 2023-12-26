@@ -5,17 +5,23 @@
 class System
 {
 public:
-    virtual void Init() = 0;
+    using Super = System;
+
+    virtual void Init(bool editorMode);
     virtual void Shutdown() = 0;
 
     virtual void Update(float dt) = 0;
     virtual int GetPriority() const = 0;
+
     virtual ~System()
     {
     }
 
 public:
     std::set<Entity> _entities;
+
+protected:
+    bool _editorMode = false;
 };
 
 // what does system do?

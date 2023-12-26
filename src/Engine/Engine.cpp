@@ -16,7 +16,7 @@
 
 Coordinator gCoordinator;
 
-void Engine::Init()
+void Engine::Init(bool editorMode)
 {
     LOG_INFO("Initializing engine...");
 
@@ -31,11 +31,11 @@ void Engine::Init()
     gCoordinator.RegisterComponent<Transform>();
     gCoordinator.RegisterComponent<Rigidbody>();
 
-    gCoordinator.RegisterSystem<WindowSystem>()->Init();
-    gCoordinator.RegisterSystem<RenderSystem>()->Init();
-    gCoordinator.RegisterSystem<ResourceSystem>()->Init();
-    gCoordinator.RegisterSystem<TranslateSystem>()->Init();
-    gCoordinator.RegisterSystem<CameraSystem>()->Init();
+    gCoordinator.RegisterSystem<WindowSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<RenderSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<ResourceSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<TranslateSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<CameraSystem>()->Init(editorMode);
 
     gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
 }

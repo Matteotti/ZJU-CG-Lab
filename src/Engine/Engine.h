@@ -5,7 +5,7 @@
 class Engine
 {
 public:
-    void Init();
+    void Init(bool editorMode = false);
     void Run();
     void RunEx(const std::function<void()> &func); // 仅在 Editor 中使用
     void Shutdown();
