@@ -133,9 +133,9 @@ void BoxCollider::Update()
 {
     glm::mat4 trans = glm::mat4(1.0f);
     glm::scale(trans, _scale);
-    glm::rotate(trans, _rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::rotate(trans, _rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::rotate(trans, _rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::rotate(trans, glm::radians(_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
     _horizontal = trans * glm::vec4(_horizontal, 1.0f);
     _vertical = trans * glm::vec4(_vertical, 1.0f);
     _depth = trans * glm::vec4(_depth, 1.0f);

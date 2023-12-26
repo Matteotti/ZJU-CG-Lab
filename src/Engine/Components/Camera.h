@@ -20,7 +20,13 @@ public:
 
     void TranslateTo(float x, float y, float z);
 
+    void TranslateTo(glm::vec3 position);
+
     void Rotate(float x, float y, float z); // parameters in angles
+
+    void RotateTo(float x, float y, float z); // parameters in angles
+
+    void RotateTo(glm::vec3 rotation); // parameters in angles
 
     void SetProjectionMode(bool isOrtho); // can use ORTHO and PERSPECTIVE macros
 

@@ -14,9 +14,13 @@
 
 Camera::Camera()
 {
-    _viewMatrix = std::make_shared<glm::mat4>(glm::mat4(1.0f));
-    _projectionMatrix = std::make_shared<glm::mat4>(glm::mat4(1.0f));
+    _viewMatrix = std::make_shared<glm::mat4>(
+        glm::lookAt(glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+    _projectionMatrix = std::make_shared<glm::mat4>(glm::perspective(100.0f, 1.0f, 0.01f, 100.0f));
     _isOrtho = PERSPECTIVE;
+    _position = glm::vec3(25.0f, 25.0f, 25.0f);
+    _target = glm::vec3(0.0f, 0.0f, 0.0f);
+    _up = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 std::shared_ptr<glm::mat4> Camera::GetViewMatrix()
@@ -42,7 +46,7 @@ void Camera::SetProjectionMatrix(std::shared_ptr<glm::mat4> projectionMatrix)
 void Camera::Translate(float x, float y, float z)
 {
     glm::mat4 trans = glm::mat4(1.0f);
-    glm::translate(trans, glm::vec3(x, y, z));
+    trans = glm::translate(trans, glm::vec3(x, y, z));
     _position = trans * glm::vec4(_position, 1.0f);
     _target = trans * glm::vec4(_target, 1.0f);
     UpdateViewMatrix();
@@ -53,16 +57,49 @@ void Camera::TranslateTo(float x, float y, float z)
     _position = glm::vec3(x, y, z);
     UpdateViewMatrix();
 }
+void Camera::TranslateTo(glm::vec3 position)
+{
+    glm::vec3 direction = _target - _position;
+    _position = position;
+    _target = position + direction;
+    UpdateViewMatrix();
+}
+
+void Camera::RotateTo(float x, float y, float z)
+{
+    glm::vec3 direction = glm::vec3(0, 0, -1);
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, glm::radians(x), glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(y), glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(z), glm::vec3(0.0f, 0.0f, 1.0f));
+    direction = trans * glm::vec4(direction, 1.0f);
+    _target = direction + _position;
+    _up = trans * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    UpdateViewMatrix();
+}
+
+void Camera::RotateTo(glm::vec3 rotation)
+{
+    glm::vec3 direction = glm::vec3(0, 0, -1);
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    direction = trans * glm::vec4(direction.x, direction.y, direction.z, 1.0f);
+    _target = direction + _position;
+    _up = trans * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    UpdateViewMatrix();
+}
 
 void Camera::Rotate(float x, float y, float z)
 {
     glm::vec3 direction = _target - _position;
     glm::mat4 trans = glm::mat4(1.0f);
-    glm::rotate(trans, x, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::rotate(trans, y, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::rotate(trans, z, glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::rotate(trans, glm::radians(x), glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(y), glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(z), glm::vec3(0.0f, 0.0f, 1.0f));
     direction = trans * glm::vec4(direction, 1.0f);
-    _position = direction + _position;
+    _target = direction + _position;
     _up = trans * glm::vec4(_up, 1.0f);
     UpdateViewMatrix();
 }
@@ -111,5 +148,7 @@ void Camera::SetAsCurrentGameplayCamera()
 
 void Camera::UpdateViewMatrix()
 {
+    // LOG_INFO("Update view matrix according to position: %f, %f, %f, target: %f, %f, %f, up: %f, %f, %f", _position.x,
+    //          _position.y, _position.z, _target.x, _target.y, _target.z, _up.x, _up.y, _up.z);
     *_viewMatrix = glm::lookAt(_position, _target, _up);
 }

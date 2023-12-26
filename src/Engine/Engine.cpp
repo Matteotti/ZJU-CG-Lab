@@ -1,6 +1,7 @@
 #include "Engine.h"
 
 #include "Coordinator.h"
+#include "Systems/CameraSystem.h"
 #include "Systems/LogSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/ResourceSystem.h"
@@ -23,6 +24,7 @@ void Engine::Init()
 
     // 注意下方的初始化顺序不能随意调换！（因为存在依赖关系）
 
+    gCoordinator.RegisterComponent<Camera>();
     gCoordinator.RegisterComponent<Mesh>();
     gCoordinator.RegisterComponent<Shader>();
     gCoordinator.RegisterComponent<Texture>();
@@ -33,6 +35,7 @@ void Engine::Init()
     gCoordinator.RegisterSystem<RenderSystem>()->Init();
     gCoordinator.RegisterSystem<ResourceSystem>()->Init();
     gCoordinator.RegisterSystem<TranslateSystem>()->Init();
+    gCoordinator.RegisterSystem<CameraSystem>()->Init();
 
     gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
 }
