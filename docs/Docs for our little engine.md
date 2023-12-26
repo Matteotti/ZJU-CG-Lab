@@ -1,4 +1,8 @@
 # 更新信息
+12.25
+- 更新了Camera与Transform的交互，现在CameraSystem会根据Camera的Transform自动更新Camera的各种矩阵
+- 改写了一些Camera的函数，修复了一些bug
+
 12.24
 - 在我把球形碰撞体修改为椭球之前，球形碰撞体暂时先别用了（
 - 增加了碰撞体的`Update`函数，会根据transform自己更新碰撞体的transform，在collisionSystem开始update时调用
