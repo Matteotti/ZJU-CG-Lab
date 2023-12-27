@@ -9,14 +9,15 @@ int main()
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
 
     std::shared_ptr<Camera> caComp = std::make_shared<Camera>();
+    caComp->Perspective(60.0f, 1.0f, 0.01f, 10000.0f);
     caComp->SetAsCurrentSceneCamera();
 
     auto camEntity = gCoordinator.CreateEntity();
     gCoordinator.AddComponent(camEntity, *caComp);
 
     Transform tfCamComp;
-    tfCamComp.SetPosition({0.0f, 0.0f, 50.0f});
-    tfCamComp.SetRotation({10.0f, 0.0f, 0.0f});
+    tfCamComp.SetPosition({0.0f, 0.0f, 75.0f});
+    tfCamComp.SetRotation({0.0f, 0.0f, 0.0f});
     gCoordinator.AddComponent(camEntity, tfCamComp);
 
     // for (int i = 0; i < 1000; i++)
@@ -34,9 +35,8 @@ int main()
         gCoordinator.AddComponent(entity, tfComp);
 
         Rigidbody rbComp;
-        // rbComp.SetVelocity({0.0f, 0, 0});
-        rbComp.SetAngularVelocity({15.0f * sin(360.0f * glfwGetTime()), 15.0f * sin(360.0f * glfwGetTime() + 120.0f),
-                                   15.0f * sin(360.0f * glfwGetTime() + 120.0f)});
+        rbComp.SetGravity({0.0f, 0.0f, 0.0f});
+        rbComp.AddForceAtPosition({1.0f, 0.0f, 0.0f}, {0.0f, 100.0f, 0.0f}, 5.0f);
         gCoordinator.AddComponent(entity, rbComp);
     }
 

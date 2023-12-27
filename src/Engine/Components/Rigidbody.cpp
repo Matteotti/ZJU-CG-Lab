@@ -3,6 +3,7 @@
 Rigidbody::Rigidbody()
 {
     _mass = 1.0f;
+    _inertiaTensor = 1.0f;
 
     _angularVelocity = glm::vec3(0.0f);
     _velocity = glm::vec3(0.0f);
@@ -38,15 +39,6 @@ void Rigidbody::AddForceAtPosition(glm::vec3 force, glm::vec3 position, float ti
     _forcesTime.push_back(time);
 }
 
-/// @brief Add torque to the Rigidbody
-/// @param torque The torque to add
-/// @param time The time to apply the torque
-void Rigidbody::AddTorque(glm::vec3 torque, float time)
-{
-    _torques.push_back(torque);
-    _torquesTime.push_back(time);
-}
-
 /// @brief Add relative force to the Rigidbody
 /// @param force The force to add
 /// @param position The position to apply the force in local space
@@ -58,18 +50,14 @@ void Rigidbody::AddRelativeForce(glm::vec3 force, glm::vec3 position, float time
     _relativeForcesTime.push_back(time);
 }
 
-/// @brief Add relative torque to the Rigidbody
-/// @param torque The torque to add
-/// @param time The time to apply the torque
-void Rigidbody::AddRelativeTorque(glm::vec3 torque, float time)
-{
-    _relativeTorques.push_back(torque);
-    _relativeTorquesTime.push_back(time);
-}
-
 void Rigidbody::SetMass(float mass)
 {
     _mass = mass;
+}
+
+void Rigidbody::SetInertiaTensor(float inertiaTensor)
+{
+    _inertiaTensor = inertiaTensor;
 }
 
 void Rigidbody::SetAngularVelocity(glm::vec3 angularVelocity)
@@ -112,97 +100,82 @@ void Rigidbody::SetGravity(glm::vec3 gravity)
     _gravity = gravity;
 }
 
-float Rigidbody::GetMass()
+float Rigidbody::GetMass() const
 {
     return _mass;
 }
 
-glm::vec3 Rigidbody::GetAngularVelocity()
+float Rigidbody::GetInertiaTensor() const
+{
+    return _inertiaTensor;
+}
+
+glm::vec3 Rigidbody::GetAngularVelocity() const
 {
     return _angularVelocity;
 }
 
-glm::vec3 Rigidbody::GetVelocity()
+glm::vec3 Rigidbody::GetVelocity() const
 {
     return _velocity;
 }
 
-float Rigidbody::GetAngularDrag()
+float Rigidbody::GetAngularDrag() const
 {
     return _angularDrag;
 }
 
-float Rigidbody::GetDrag()
+float Rigidbody::GetDrag() const
 {
     return _drag;
 }
 
-float Rigidbody::GetMaxAngularVelocity()
+float Rigidbody::GetMaxAngularVelocity() const
 {
     return _maxAngularVelocity;
 }
 
-float Rigidbody::GetMaxVelocity()
+float Rigidbody::GetMaxVelocity() const
 {
     return _maxVelocity;
 }
 
-bool Rigidbody::IsUseGravity()
+bool Rigidbody::IsUseGravity() const
 {
     return _useGravity;
 }
 
-glm::vec3 Rigidbody::GetGravity()
+glm::vec3 Rigidbody::GetGravity() const
 {
     return _gravity;
 }
 
-std::list<glm::vec3> Rigidbody::GetForces()
+std::vector<glm::vec3> &Rigidbody::GetForces()
 {
     return _forces;
 }
 
-std::list<glm::vec3> Rigidbody::GetForcesPosition()
+std::vector<glm::vec3> &Rigidbody::GetForcesPosition()
 {
     return _forcesPosition;
 }
 
-std::list<float> Rigidbody::GetForcesTime()
+std::vector<float> &Rigidbody::GetForcesTime()
 {
     return _forcesTime;
 }
 
-std::list<glm::vec3> Rigidbody::GetRelativeForces()
+std::vector<glm::vec3> &Rigidbody::GetRelativeForces()
 {
     return _relativeForces;
 }
 
-std::list<glm::vec3> Rigidbody::GetRelativeForcesPosition()
+std::vector<glm::vec3> &Rigidbody::GetRelativeForcesPosition()
 {
     return _relativeForcesPosition;
 }
 
-std::list<float> Rigidbody::GetRelativeForcesTime()
+std::vector<float> &Rigidbody::GetRelativeForcesTime()
 {
     return _relativeForcesTime;
-}
-
-std::list<glm::vec3> Rigidbody::GetTorques()
-{
-    return _torques;
-}
-
-std::list<float> Rigidbody::GetTorquesTime()
-{
-    return _torquesTime;
-}
-
-std::list<glm::vec3> Rigidbody::GetRelativeTorques()
-{
-    return _relativeTorques;
-}
-
-std::list<float> Rigidbody::GetRelativeTorquesTime()
-{
-    return _relativeTorquesTime;
 }

@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 #include <iostream>
-#include <list>
 #include <memory>
+#include <vector>
 
 #include "Others/Layer.h"
 #include "Systems/LogSystem.h"
@@ -12,6 +12,7 @@ class Rigidbody
 {
 private:
     float _mass;
+    float _inertiaTensor;
 
     glm::vec3 _angularVelocity;
     glm::vec3 _velocity;
@@ -26,20 +27,15 @@ private:
     glm::vec3 _gravity;
 
     // process in Update in PhysicsSystem, readOnly
-    std::list<glm::vec3> _forces;
-    std::list<glm::vec3> _forcesPosition;
-    std::list<float> _forcesTime;
+    std::vector<glm::vec3> _forces;
+    std::vector<glm::vec3> _forcesPosition;
+    std::vector<float> _forcesTime;
 
-    std::list<glm::vec3> _relativeForces;
-    std::list<glm::vec3> _relativeForcesPosition;
-    std::list<float> _relativeForcesTime;
+    std::vector<glm::vec3> _relativeForces;
+    std::vector<glm::vec3> _relativeForcesPosition;
+    std::vector<float> _relativeForcesTime;
 
-    std::list<glm::vec3> _torques;
-    std::list<float> _torquesTime;
-
-    std::list<glm::vec3> _relativeTorques;
-    std::list<float> _relativeTorquesTime;
-
+    // TODO: Do we really need these?
     void OnCollisionEnter(std::shared_ptr<Rigidbody> other);
     void OnCollisionExit(std::shared_ptr<Rigidbody> other);
     void OnCollisionStay(std::shared_ptr<Rigidbody> other);
@@ -49,11 +45,10 @@ public:
 
     void AddForce(glm::vec3 force, float time = 0.05f);
     void AddForceAtPosition(glm::vec3 force, glm::vec3 position, float time = 0.05f);
-    void AddTorque(glm::vec3 torque, float time = 0.05f);
     void AddRelativeForce(glm::vec3 force, glm::vec3 position, float time = 0.05f);
-    void AddRelativeTorque(glm::vec3 force, float time = 0.05f);
 
     void SetMass(float mass);
+    void SetInertiaTensor(float inertiaTensor);
     void SetAngularVelocity(glm::vec3 angularVelocity);
     void SetVelocity(glm::vec3 velocity);
     void SetAngularDrag(float angularDrag);
@@ -63,27 +58,22 @@ public:
     void SetIsUseGravity(bool useGravity);
     void SetGravity(glm::vec3 gravity);
 
-    float GetMass();
-    glm::vec3 GetAngularVelocity();
-    glm::vec3 GetVelocity();
-    float GetAngularDrag();
-    float GetDrag();
-    float GetMaxAngularVelocity();
-    float GetMaxVelocity();
-    bool IsUseGravity();
-    glm::vec3 GetGravity();
+    float GetMass() const;
+    float GetInertiaTensor() const;
+    glm::vec3 GetAngularVelocity() const;
+    glm::vec3 GetVelocity() const;
+    float GetAngularDrag() const;
+    float GetDrag() const;
+    float GetMaxAngularVelocity() const;
+    float GetMaxVelocity() const;
+    bool IsUseGravity() const;
+    glm::vec3 GetGravity() const;
 
-    std::list<glm::vec3> GetForces();
-    std::list<glm::vec3> GetForcesPosition();
-    std::list<float> GetForcesTime();
+    std::vector<glm::vec3> &GetForces();
+    std::vector<glm::vec3> &GetForcesPosition();
+    std::vector<float> &GetForcesTime();
 
-    std::list<glm::vec3> GetRelativeForces();
-    std::list<glm::vec3> GetRelativeForcesPosition();
-    std::list<float> GetRelativeForcesTime();
-
-    std::list<glm::vec3> GetTorques();
-    std::list<float> GetTorquesTime();
-
-    std::list<glm::vec3> GetRelativeTorques();
-    std::list<float> GetRelativeTorquesTime();
+    std::vector<glm::vec3> &GetRelativeForces();
+    std::vector<glm::vec3> &GetRelativeForcesPosition();
+    std::vector<float> &GetRelativeForcesTime();
 };

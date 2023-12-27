@@ -15,10 +15,10 @@
 Camera::Camera()
 {
     _viewMatrix = std::make_shared<glm::mat4>(
-        glm::lookAt(glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 75.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
     _projectionMatrix = std::make_shared<glm::mat4>(glm::perspective(100.0f, 1.0f, 0.01f, 100.0f));
     _isOrtho = PERSPECTIVE;
-    _position = glm::vec3(25.0f, 25.0f, 25.0f);
+    _position = glm::vec3(0.0f, 0.0f, 75.0f);
     _target = glm::vec3(0.0f, 0.0f, 0.0f);
     _up = glm::vec3(0.0f, 1.0f, 0.0f);
 }

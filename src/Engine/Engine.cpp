@@ -3,6 +3,7 @@
 #include "Coordinator.h"
 #include "Systems/CameraSystem.h"
 #include "Systems/LogSystem.h"
+#include "Systems/PhysicsSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/ResourceSystem.h"
 #include "Systems/TranslateSystem.h"
@@ -35,6 +36,7 @@ void Engine::Init(bool editorMode)
     gCoordinator.RegisterSystem<RenderSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<ResourceSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<TranslateSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<PhysicsSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<CameraSystem>()->Init(editorMode);
 
     gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
