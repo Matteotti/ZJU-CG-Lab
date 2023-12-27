@@ -1,6 +1,9 @@
 #include "Editor.h"
 
 #include "EditorSettings.h"
+#include "Entity.h"
+
+#include "Module/EditorModule.h"
 #include "Module/Explorer.h"
 #include "Module/MainMenu.h"
 #include "Module/PropertyView.h"
@@ -18,7 +21,6 @@
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <memory>
 
 void Editor::Init()
 {
@@ -43,8 +45,8 @@ void Editor::Init()
     ImFontConfig fontConfig;
     fontConfig.MergeMode = true;
     fontConfig.PixelSnapH = true;
-    fontConfig.GlyphOffset = ImVec2(0.0f, 5.0f);
-    ImWchar glyphRanges[] = {0xe000, 0xf200, 0};
+    fontConfig.GlyphOffset = ImVec2(0.0f, 3.0f);
+    ImWchar glyphRanges[] = {0xe000, 0xffff, 0};
     io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msyh.ttc", 24.0f, NULL, io.Fonts->GetGlyphRangesDefault());
     io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON, 24.0f, &fontConfig, glyphRanges);
 
@@ -63,6 +65,7 @@ void Editor::Init()
     _modules.emplace_back(std::make_shared<Explorer>());
 
     // Test
+    _entities = std::make_shared<std::vector<Entity>>();
     glfwSwapInterval(1);
 }
 

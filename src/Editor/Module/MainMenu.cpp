@@ -43,6 +43,17 @@ void MainMenu::Update()
             static ImVec4 color = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
             ImGui::ColorEdit3("Clear Color", (float *)&color);
             glClearColor(color.x, color.y, color.z, 1.0f);
+
+            ImGui::SeparatorText("Render Settings");
+            static bool wireframe = false;
+            if (ImGui::Checkbox("Render wireframe", &wireframe))
+            {
+                if (wireframe)
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                else
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+
             ImGui::EndMenu();
         }
 

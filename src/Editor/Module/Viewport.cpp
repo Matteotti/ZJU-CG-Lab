@@ -20,11 +20,12 @@ void Viewport::Update()
             auto textureID = renderSystem->GetPostProcFramebufferTexture();
 
             renderSystem->GetCurrentCamera()->Perspective(90.0f, width / height, 0.1f, 100.0f);
+
             ImGui::Image((ImTextureID)textureID, ImVec2(width, height), ImVec2(0, 1), ImVec2(1, 0));
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("\ue145"))
+        if (ImGui::BeginTabItem("\ue145 New Viewport"))
         {
             ImGui::EndTabItem();
         }

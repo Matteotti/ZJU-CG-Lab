@@ -27,4 +27,6 @@ private:
     bool _reDockFlag = true;
     int _fbWidth, _fbHeight;
     std::vector<std::shared_ptr<EditorModule>> _modules;
+
+    std::shared_ptr<std::vector<Entity>> _entities;
 };
