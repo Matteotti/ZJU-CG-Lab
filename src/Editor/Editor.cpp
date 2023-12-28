@@ -47,7 +47,7 @@ void Editor::Init()
     fontConfig.PixelSnapH = true;
     fontConfig.GlyphOffset = ImVec2(0.0f, 3.0f);
     ImWchar glyphRanges[] = {0xe000, 0xffff, 0};
-    io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msyh.ttc", 24.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+    io.Fonts->AddFontFromFileTTF(EDITOR_FONT_PATH, 24.0f, NULL, io.Fonts->GetGlyphRangesDefault());
     io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON, 24.0f, &fontConfig, glyphRanges);
 
     // Init window
