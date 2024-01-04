@@ -10,6 +10,8 @@
 #include "Module/SceneManager.h"
 #include "Module/Viewport.h"
 
+#include "Components/Camera.h"
+#include "Components/Transform.h"
 #include "Coordinator.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/WindowSystem.h"
@@ -46,9 +48,9 @@ void Editor::Init()
     fontConfig.MergeMode = true;
     fontConfig.PixelSnapH = true;
     fontConfig.GlyphOffset = ImVec2(0.0f, 3.0f);
-    ImWchar glyphRanges[] = {0xe000, 0xffff, 0};
+    static const ImWchar glyphRanges[] = {0xe000, 0xffff, 0};
     io.Fonts->AddFontFromFileTTF(EDITOR_FONT_PATH, 24.0f, NULL, io.Fonts->GetGlyphRangesDefault());
-    io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON, 24.0f, &fontConfig, glyphRanges);
+    io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON_PATH, 24.0f, &fontConfig, glyphRanges);
 
     // Init window
     auto window = _windowSystem->GetWindowHandle();
@@ -66,6 +68,18 @@ void Editor::Init()
 
     // Test
     _entities = std::make_shared<std::vector<Entity>>();
+    EditorModule::_entities = _entities;
+
+    // Init Camera
+    std::shared_ptr<Camera> caComp = std::make_shared<Camera>();
+    caComp->SetAsCurrentSceneCamera();
+    auto camEntity = gCoordinator.CreateEntity();
+    gCoordinator.AddComponent(camEntity, *caComp);
+    Transform tfCamComp;
+    tfCamComp.SetPosition({0.0f, 0.0f, 30.0f});
+    tfCamComp.SetRotation({10.0f, 0.0f, 0.0f});
+    gCoordinator.AddComponent(camEntity, tfCamComp);
+
     glfwSwapInterval(1);
 }
 
@@ -100,7 +114,7 @@ void Editor::DockSpace()
         ImGui::DockBuilderSetNodeSize(dockspaceID, ImGui::GetMainViewport()->Size);
 
         ImGuiID dockMainID = dockspaceID;
-        ImGuiID dockRightTopID = ImGui::DockBuilderSplitNode(dockMainID, ImGuiDir_Right, 0.30f, nullptr, &dockMainID);
+        ImGuiID dockRightTopID = ImGui::DockBuilderSplitNode(dockMainID, ImGuiDir_Right, 0.35f, nullptr, &dockMainID);
         ImGuiID dockRightBottomID =
             ImGui::DockBuilderSplitNode(dockRightTopID, ImGuiDir_Down, 0.70f, nullptr, &dockRightTopID);
         ImGuiID dockBottomID = ImGui::DockBuilderSplitNode(dockMainID, ImGuiDir_Down, 0.30f, nullptr, &dockMainID);

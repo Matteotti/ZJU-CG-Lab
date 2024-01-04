@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/Rigidbody.h"
+#include "Components/Texture.h"
 #include "EditorModule.h"
 
 #include "Entity.h"
@@ -18,7 +19,5 @@ public:
     void ViewProp(Entity entity);
     void ViewProp(Transform &tfComp);
     void ViewProp(Rigidbody &rbComp);
-
-private:
-    Entity _testEntity; // TEST
+    void ViewProp(Texture &rbComp);
 };
