@@ -11,8 +11,14 @@ class PhysicsMaterial
 {
 private:
     float _bounciness;
-    float _dynamicFriction;
-    float _staticFriction;
+    float _friction;
     CombineMode _bouncinessCombine;
     CombineMode _frictionCombine;
+
+public:
+    PhysicsMaterial(float bounciness = 0.6f, float friction = 0.4f, CombineMode bouncinessCombine = Average,
+                    CombineMode frictionCombine = Average);
+
+    float CombinedBounciness(PhysicsMaterial &otherMaterial) const;
+    float CombinedFriction(PhysicsMaterial &otherMaterial) const;
 };

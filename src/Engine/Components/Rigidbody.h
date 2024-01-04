@@ -8,6 +8,8 @@
 #include "Others/Layer.h"
 #include "Systems/LogSystem.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 class Rigidbody
 {
 private:
@@ -33,7 +35,11 @@ private:
 
     std::vector<glm::vec3> _relativeForces;
     std::vector<glm::vec3> _relativeForcesPosition;
+    std::vector<glm::vec3> _rawRelativeForcesPosition;
     std::vector<float> _relativeForcesTime;
+
+    std::vector<glm::vec3> _impulse;
+    std::vector<glm::vec3> _impulsePosition;
 
     // TODO: Do we really need these?
     void OnCollisionEnter(std::shared_ptr<Rigidbody> other);
@@ -46,6 +52,8 @@ public:
     void AddForce(glm::vec3 force, float time = 0.05f);
     void AddForceAtPosition(glm::vec3 force, glm::vec3 position, float time = 0.05f);
     void AddRelativeForce(glm::vec3 force, glm::vec3 position, float time = 0.05f);
+    void AddImpulse(glm::vec3 impulse, glm::vec3 position);
+    void UpdateRelativeForcesPosition(glm::vec3 rotation, glm::vec3 scale);
 
     void SetMass(float mass);
     void SetInertiaTensor(float inertiaTensor);
@@ -76,4 +84,7 @@ public:
     std::vector<glm::vec3> &GetRelativeForces();
     std::vector<glm::vec3> &GetRelativeForcesPosition();
     std::vector<float> &GetRelativeForcesTime();
+
+    std::vector<glm::vec3> &GetImpulse();
+    std::vector<glm::vec3> &GetImpulsePosition();
 };

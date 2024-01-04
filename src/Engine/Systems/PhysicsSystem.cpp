@@ -46,7 +46,7 @@ void PhysicsSystem::Update(float dt)
             glm::vec3 angularAccelaration = torque / rigidbody.GetInertiaTensor();
 
             rigidbody.SetVelocity(rigidbody.GetVelocity() + accelaration * dt);
-            rigidbody.SetAngularVelocity(rigidbody.GetAngularVelocity() + angularAccelaration * dt);
+            rigidbody.SetAngularVelocity(rigidbody.GetAngularVelocity() + glm::degrees(angularAccelaration) * dt);
 
             commonForcesTime[i] -= dt;
 
@@ -70,8 +70,9 @@ void PhysicsSystem::Update(float dt)
             glm::vec3 force = relativeForces[i];
             glm::vec3 position = relativeForcesPos[i];
 
-            LOG_INFO("Resolve relative force %d {%f, %f, %f}, local pos {%f, %f, %f}, last time %f", i, force.x,
-                     force.y, force.z, position.x, position.y, position.z, relativeForcesTime[i]);
+            if (relativeForces[i] != rigidbody.GetGravity() * rigidbody.GetMass())
+                LOG_INFO("Resolve relative force %d {%f, %f, %f}, local pos {%f, %f, %f}, last time %f", i, force.x,
+                         force.y, force.z, position.x, position.y, position.z, relativeForcesTime[i]);
 
             glm::vec3 torque = glm::cross(position, force);
 
@@ -79,7 +80,7 @@ void PhysicsSystem::Update(float dt)
             glm::vec3 angularAccelaration = torque / rigidbody.GetInertiaTensor();
 
             rigidbody.SetVelocity(rigidbody.GetVelocity() + accelaration * dt);
-            rigidbody.SetAngularVelocity(rigidbody.GetAngularVelocity() + angularAccelaration * dt);
+            rigidbody.SetAngularVelocity(rigidbody.GetAngularVelocity() + glm::degrees(angularAccelaration) * dt);
 
             relativeForcesTime[i] -= dt;
 
@@ -89,12 +90,34 @@ void PhysicsSystem::Update(float dt)
                 relativeForcesPos.erase(relativeForcesPos.begin() + i);
                 relativeForcesTime.erase(relativeForcesTime.begin() + i);
 
-                // LOG_INFO("Erased, size %d", relativeForces.size());
-                // LOG_INFO("Erased, size in rigidbody %d", rigidbody.GetRelativeForces().size());
-
                 i--;
                 relativeForceNums--;
             }
+        }
+
+        // 2.3. Apply impulse
+        std::vector<glm::vec3> &impulses = rigidbody.GetImpulse();
+        std::vector<glm::vec3> &impulsePos = rigidbody.GetImpulsePosition();
+        for (int i = 0; i < impulses.size(); i++)
+        {
+            glm::vec3 impulse = impulses[i];
+            glm::vec3 position = impulsePos[i];
+
+            glm::vec3 torque = glm::cross(position, impulse);
+
+            glm::vec3 accelaration = impulse / rigidbody.GetMass();
+            glm::vec3 angularAccelaration = torque / rigidbody.GetInertiaTensor();
+
+            rigidbody.SetVelocity(rigidbody.GetVelocity() + accelaration);
+            rigidbody.SetAngularVelocity(rigidbody.GetAngularVelocity() + glm::degrees(angularAccelaration));
+
+            LOG_INFO("Impulse made acceleration {%f, %f, %f}, angular acceleration {%f, %f, %f}.", accelaration.x,
+                     accelaration.y, accelaration.z, angularAccelaration.x, angularAccelaration.y,
+                     angularAccelaration.z);
+
+            impulses.erase(impulses.begin() + i);
+            impulsePos.erase(impulsePos.begin() + i);
+            i--;
         }
     }
 }

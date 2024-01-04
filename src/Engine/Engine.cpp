@@ -2,6 +2,7 @@
 
 #include "Coordinator.h"
 #include "Systems/CameraSystem.h"
+#include "Systems/CollisionSystem.h"
 #include "Systems/LogSystem.h"
 #include "Systems/PhysicsSystem.h"
 #include "Systems/RenderSystem.h"
@@ -9,6 +10,7 @@
 #include "Systems/TranslateSystem.h"
 #include "Systems/WindowSystem.h"
 
+#include "Components/Collider.h"
 #include "Components/Mesh.h"
 #include "Components/Rigidbody.h"
 #include "Components/Shader.h"
@@ -31,12 +33,14 @@ void Engine::Init(bool editorMode)
     gCoordinator.RegisterComponent<Texture>();
     gCoordinator.RegisterComponent<Transform>();
     gCoordinator.RegisterComponent<Rigidbody>();
+    gCoordinator.RegisterComponent<Collider>();
 
     gCoordinator.RegisterSystem<WindowSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<RenderSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<ResourceSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<TranslateSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<PhysicsSystem>()->Init(editorMode);
+    gCoordinator.RegisterSystem<CollisionSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<CameraSystem>()->Init(editorMode);
 
     gCoordinator.GetSystem<ResourceSystem>()->LoadResource();

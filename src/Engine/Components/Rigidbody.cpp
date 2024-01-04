@@ -46,8 +46,35 @@ void Rigidbody::AddForceAtPosition(glm::vec3 force, glm::vec3 position, float ti
 void Rigidbody::AddRelativeForce(glm::vec3 force, glm::vec3 position, float time)
 {
     _relativeForces.push_back(force);
+    _rawRelativeForcesPosition.push_back(position);
     _relativeForcesPosition.push_back(position);
     _relativeForcesTime.push_back(time);
+}
+
+/// @brief Add impulse to the Rigidbody
+/// @param impulse The impulse to add
+/// @param position The position to apply the force
+void Rigidbody::AddImpulse(glm::vec3 impulse, glm::vec3 position)
+{
+    _impulse.push_back(impulse);
+    _impulsePosition.push_back(position);
+}
+
+/// @brief Update the relative forces position according to rotation
+/// @param rotation The rotation to update
+void Rigidbody::UpdateRelativeForcesPosition(glm::vec3 rotation, glm::vec3 scale)
+{
+    _relativeForcesPosition.clear();
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    trans = glm::rotate(trans, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::scale(trans, scale);
+    for (auto &position : _rawRelativeForcesPosition)
+    {
+        position = trans * glm::vec4(position, 1.0f);
+        _relativeForcesPosition.push_back(position);
+    }
 }
 
 void Rigidbody::SetMass(float mass)
@@ -178,4 +205,14 @@ std::vector<glm::vec3> &Rigidbody::GetRelativeForcesPosition()
 std::vector<float> &Rigidbody::GetRelativeForcesTime()
 {
     return _relativeForcesTime;
+}
+
+std::vector<glm::vec3> &Rigidbody::GetImpulse()
+{
+    return _impulse;
+}
+
+std::vector<glm::vec3> &Rigidbody::GetImpulsePosition()
+{
+    return _impulsePosition;
 }

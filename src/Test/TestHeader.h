@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/Camera.h"
+#include "Components/Collider.h"
 #include "Components/Mesh.h"
 #include "Components/Rigidbody.h"
 #include "Components/Shader.h"

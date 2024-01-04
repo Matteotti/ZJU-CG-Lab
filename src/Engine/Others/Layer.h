@@ -6,15 +6,15 @@ using LayerMask = uint32_t;
 
 namespace Layers
 {
-    constexpr Layer Default = 1 << 0;
-    // ...
-}
+constexpr Layer Default = 1 << 0;
+// ...
+} // namespace Layers
 
 namespace LayerMasks
 {
-    constexpr LayerMask All = ~0;
-    constexpr LayerMask None = 0;
-    // ...
+constexpr LayerMask All = static_cast<LayerMask>(~0);
+constexpr LayerMask None = 0;
+// ...
 
-    bool IsInLayerMask(Layer layer, LayerMask layerMask);
-}
+bool IsInLayerMask(Layer layer, LayerMask layerMask);
+} // namespace LayerMasks
