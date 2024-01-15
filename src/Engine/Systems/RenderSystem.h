@@ -28,5 +28,6 @@ public:
 
 private:
     GLuint _postProcFramebuffer, _postProcFramebufferTexture;
+    GLuint _postProcFramebufferAux, _postProcFramebufferTextureAux;
     std::shared_ptr<Camera> _currentSceneCamera;
 };

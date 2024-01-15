@@ -29,7 +29,7 @@ void SceneManager::Update()
     ImGui::SameLine();
 
     ImGui::PushStyleColor(ImGuiCol_Button, {0.3f, 0.0f, 0.7f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.0f, 0.0f, 0.9f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.5f, 0.0f, 0.9f, 1.0f});
     if (ImGui::Button("\ue145 Add 10 Entities"))
     {
         for (int i = 0; i < 10; i++)
@@ -47,13 +47,20 @@ void SceneManager::Update()
 
     ImGui::PopStyleColor(6);
 
+    ImGui::SameLine();
+    ImGui::SeparatorText("");
+
     // scene info
-    for (auto entity : *_entities)
+    if (ImGui::TreeNode("Main"))
     {
-        char buf[32];
-        sprintf(buf, "Entity #%d", entity);
-        if (ImGui::Selectable(buf, _selectedEntity == entity))
-            _selectedEntity = entity;
+        for (auto entity : *_entities)
+        {
+            char buf[32];
+            sprintf(buf, "Entity #%d", entity);
+            if (ImGui::Selectable(buf, _selectedEntity == entity))
+                _selectedEntity = entity;
+        }
+        ImGui::TreePop();
     }
 
     ImGui::End();
@@ -66,7 +73,7 @@ void SceneManager::OnAddEntity()
 
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
 
-    resSys->AttachAsset(AssetType::MESH, "icosphere", newEntity);
+    resSys->AttachAsset(AssetType::MESH, "teapot", newEntity);
     resSys->AttachAsset(AssetType::SHADER, "default", newEntity);
     resSys->AttachAsset(AssetType::TEXTURE, "wall", newEntity);
 

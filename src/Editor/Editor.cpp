@@ -47,10 +47,10 @@ void Editor::Init()
     ImFontConfig fontConfig;
     fontConfig.MergeMode = true;
     fontConfig.PixelSnapH = true;
-    fontConfig.GlyphOffset = ImVec2(0.0f, 3.0f);
+    fontConfig.GlyphOffset = ImVec2(0.0f, 6.5f);
     static const ImWchar glyphRanges[] = {0xe000, 0xffff, 0};
     io.Fonts->AddFontFromFileTTF(EDITOR_FONT_PATH, 24.0f, NULL, io.Fonts->GetGlyphRangesDefault());
-    io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON_PATH, 24.0f, &fontConfig, glyphRanges);
+    io.Fonts->AddFontFromFileTTF(EDITOR_FONT_ICON_PATH, 32.0f, &fontConfig, glyphRanges);
 
     // Init window
     auto window = _windowSystem->GetWindowHandle();
@@ -80,7 +80,35 @@ void Editor::Init()
     tfCamComp.SetRotation({10.0f, 0.0f, 0.0f});
     gCoordinator.AddComponent(camEntity, tfCamComp);
 
+    // Enable Vsync
     glfwSwapInterval(1);
+
+    InitTheme();
+}
+
+void Editor::InitTheme()
+{
+    auto &style = ImGui::GetStyle();
+    auto &colors = style.Colors;
+
+    colors[ImGuiCol_TitleBg] = {0.113f, 0.113f, 0.113f, 1.0f};
+    colors[ImGuiCol_TitleBgActive] = {0.187f, 0.187f, 0.187f, 1.0f};
+
+    colors[ImGuiCol_Tab] = {0.113f, 0.113f, 0.113f, 1.0f};
+    colors[ImGuiCol_TabUnfocusedActive] = {0.113f, 0.113f, 0.113f, 1.0f};
+    colors[ImGuiCol_TabActive] = {0.5f, 0.5f, 0.5f, 1.0f};
+    colors[ImGuiCol_TabHovered] = {0.3f, 0.3f, 0.3f, 1.0f};
+
+    colors[ImGuiCol_HeaderHovered] = {0.3f, 0.3f, 0.3f, 1.0f};
+
+    colors[ImGuiCol_FrameBg] = {0.3f, 0.3f, 0.3f, 1.0f};
+
+    style.WindowPadding = {8, 10};
+    style.FramePadding = {8, 8};
+    style.ItemSpacing = {8, 8};
+    style.ItemInnerSpacing = {8, 8};
+    style.ScrollbarSize = 16;
+    style.FrameRounding = 6;
 }
 
 void Editor::DockSpace()

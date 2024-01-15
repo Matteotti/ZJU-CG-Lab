@@ -92,12 +92,12 @@ void RenderSystem::InitFrameBuffer()
 
     // create a color attachment texture
     glGenTextures(1, &_postProcFramebufferTexture);
-    glBindTexture(GL_TEXTURE_2D, _postProcFramebufferTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE,
-                 NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _postProcFramebufferTexture, 0);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, _postProcFramebufferTexture);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, GL_TRUE);
+    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, _postProcFramebufferTexture,
+                           0);
 
     // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
     unsigned int rbo;
@@ -105,7 +105,8 @@ void RenderSystem::InitFrameBuffer()
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 
     // use a single renderbuffer object for both a depth AND stencil buffer.
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT);
+    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, ENGINE_WINDOW_WIDTH,
+                                     ENGINE_WINDOW_HEIGHT);
 
     // now actually attach it
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
@@ -115,6 +116,23 @@ void RenderSystem::InitFrameBuffer()
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
         LOG_ERROR("Framebuffer is not complete!");
+    }
+
+    //////////////////////////////////////////////// Aux FIX WIDTH HEIGHT!!
+    glGenFramebuffers(1, &_postProcFramebufferAux);
+    glBindFramebuffer(GL_FRAMEBUFFER, _postProcFramebufferAux);
+
+    glGenTextures(1, &_postProcFramebufferTextureAux);
+    glBindTexture(GL_TEXTURE_2D, _postProcFramebufferTextureAux);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                 NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _postProcFramebufferTextureAux, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        LOG_ERROR("Aux Framebuffer is not complete!");
     }
 }
 
@@ -141,6 +159,11 @@ void RenderSystem::EndFrame()
 {
     if (_editorMode)
     {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, _postProcFramebuffer);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _postProcFramebufferAux);
+        glBlitFramebuffer(0, 0, ENGINE_WINDOW_WIDTH, ENGINE_WINDOW_HEIGHT, 0, 0, ENGINE_WINDOW_WIDTH,
+                          ENGINE_WINDOW_HEIGHT, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
@@ -148,5 +171,5 @@ void RenderSystem::EndFrame()
 
 GLuint RenderSystem::GetPostProcFramebufferTexture()
 {
-    return _postProcFramebufferTexture;
+    return _postProcFramebufferTextureAux;
 }
