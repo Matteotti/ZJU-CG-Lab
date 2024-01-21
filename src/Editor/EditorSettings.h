@@ -8,3 +8,5 @@
 #define EDITOR_MODULENAME_PROPVIEW "\ue429 Property Window"
 #define EDITOR_MODULENAME_SCENEMGR "\ue53b Scene Window"
 #define EDITOR_MODULENAME_EXPLORER "\ue2c8 Explorer"
+
+#define EDITOR_GLSL_VERSION "#version 460"

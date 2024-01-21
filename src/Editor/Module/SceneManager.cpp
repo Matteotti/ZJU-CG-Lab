@@ -1,10 +1,12 @@
 #include "SceneManager.h"
 
+#include "Context.h"
 #include "EditorSettings.h"
 
 #include "Components/Camera.h"
 #include "Components/Rigidbody.h"
 #include "Components/Transform.h"
+
 #include "Coordinator.h"
 #include "Entity.h"
 #include "Systems/RenderSystem.h"
@@ -12,11 +14,12 @@
 #include "Systems/WindowSystem.h"
 
 #include <cstdint>
+
 #include <imgui/imgui.h>
 
 void SceneManager::Update()
 {
-    ImGui::Begin(EDITOR_MODULENAME_SCENEMGR, nullptr);
+    ImGui::Begin(EDITOR_MODULENAME_SCENEMGR);
 
     ImGui::PushStyleColor(ImGuiCol_Button, {0.0f, 0.5f, 0.0f, 1.0f});
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.0f, 0.7f, 0.0f, 1.0f});
@@ -25,41 +28,51 @@ void SceneManager::Update()
     {
         OnAddEntity();
     }
-
-    ImGui::SameLine();
-
-    ImGui::PushStyleColor(ImGuiCol_Button, {0.3f, 0.0f, 0.7f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.5f, 0.0f, 0.9f, 1.0f});
-    if (ImGui::Button("\ue145 Add 10 Entities"))
-    {
-        for (int i = 0; i < 10; i++)
-            OnAddEntity();
-    }
+    ImGui::PopStyleColor(2);
 
     ImGui::SameLine();
 
     ImGui::PushStyleColor(ImGuiCol_Button, {0.5f, 0.0f, 0.0f, 1.0f});
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.7f, 0.0f, 0.0f, 1.0f});
-    if (ImGui::Button("\ue0b8 Clear"))
+    if (ImGui::Button("\ue0b8 Clear ALL"))
     {
         OnClearAllEntity();
     }
-
-    ImGui::PopStyleColor(6);
+    ImGui::PopStyleColor(2);
 
     ImGui::SameLine();
     ImGui::SeparatorText("");
 
     // scene info
+    static char entityNameBuf[32];
     if (ImGui::TreeNode("Main"))
     {
-        for (auto entity : *_entities)
+        ImGui::PushStyleColor(ImGuiCol_Header, {0.3f, 0.3f, 0.3f, 1.0f});
+        for (auto entity : *gContext._entities)
         {
-            char buf[32];
-            sprintf(buf, "Entity #%d", entity);
-            if (ImGui::Selectable(buf, _selectedEntity == entity))
-                _selectedEntity = entity;
+            if (gContext._selectedEntity == entity)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Button, {0.5f, 0.0f, 0.0f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.7f, 0.0f, 0.0f, 1.0f});
+                if (ImGui::Button("\ue5cd"))
+                {
+                    gCoordinator.DestroyEntity(entity);
+
+                    gContext._entities->erase(entity);
+                    gContext._selectedEntity = UNDEFINED_ENTITY;
+                }
+                ImGui::PopStyleColor(2);
+
+                ImGui::SameLine();
+            }
+
+            sprintf(entityNameBuf, "Entity #%d", entity);
+            if (ImGui::Selectable(entityNameBuf, gContext._selectedEntity == entity))
+            {
+                gContext._selectedEntity = entity;
+            }
         }
+        ImGui::PopStyleColor();
         ImGui::TreePop();
     }
 
@@ -69,11 +82,11 @@ void SceneManager::Update()
 void SceneManager::OnAddEntity()
 {
     auto newEntity = gCoordinator.CreateEntity();
-    _entities->push_back(newEntity);
+    gContext._entities->insert(newEntity);
 
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
 
-    resSys->AttachAsset(AssetType::MESH, "teapot", newEntity);
+    resSys->AttachAsset(AssetType::MESH, "cube", newEntity);
     resSys->AttachAsset(AssetType::SHADER, "default", newEntity);
     resSys->AttachAsset(AssetType::TEXTURE, "wall", newEntity);
 
@@ -91,10 +104,10 @@ void SceneManager::OnAddEntity()
 
 void SceneManager::OnClearAllEntity()
 {
-    _selectedEntity = UINT32_MAX;
-    for (auto e : *_entities)
+    gContext._selectedEntity = UNDEFINED_ENTITY;
+    for (auto e : *gContext._entities)
     {
         gCoordinator.DestroyEntity(e);
     }
-    _entities->clear();
+    gContext._entities->clear();
 }

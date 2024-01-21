@@ -1,14 +1,16 @@
 #include "PropertyView.h"
 
-#include "Components/Texture.h"
+#include "Context.h"
 #include "EditorSettings.h"
 
 #include "Components/Camera.h"
 #include "Components/Rigidbody.h"
+#include "Components/Texture.h"
 #include "Components/Transform.h"
 #include "Coordinator.h"
 
 #include <cstdint>
+
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
 
@@ -20,12 +22,14 @@ void PropertyView::Update()
 {
     ImGui::Begin(EDITOR_MODULENAME_PROPVIEW);
 
-    if (_selectedEntity != UINT32_MAX)
+    auto selectedEntity = gContext._selectedEntity;
+
+    if (selectedEntity != UINT32_MAX)
     {
-        ViewProp(_selectedEntity);
-        ViewProp(gCoordinator.GetComponent<Transform>(_selectedEntity));
-        ViewProp(gCoordinator.GetComponent<Rigidbody>(_selectedEntity));
-        ViewProp(gCoordinator.GetComponent<Texture>(_selectedEntity));
+        ViewProp(selectedEntity);
+        ViewProp(gCoordinator.GetComponent<Transform>(selectedEntity));
+        ViewProp(gCoordinator.GetComponent<Rigidbody>(selectedEntity));
+        ViewProp(gCoordinator.GetComponent<Texture>(selectedEntity));
     }
 
     ImGui::End();

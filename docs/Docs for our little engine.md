@@ -1,4 +1,14 @@
 # 更新信息
+
+2024
+----
+1.21 zly  
+- 引入了 `WindowSystem::RegisterOnXXFunc` 系列，支持用户在触发部分事件（移动鼠标、按下某个按键、改变窗口大小等）时调用任意数量的自定义函数，具体参见 `Engine/Systems/WindowSystem`。
+- Editor：重构，引入 `Context` 类便于各个 Module 之间共享数据、修改了部分控件的名称、增加了删除指定 Entity 的功能。
+
+2023
+----
+
 12.26 zly
 - 给 `System::Init` 增加了 `bool editorMode` 参数
 - ~~Editor is coming soon!~~

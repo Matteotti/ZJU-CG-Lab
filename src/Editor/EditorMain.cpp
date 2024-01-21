@@ -6,6 +6,7 @@ int main()
 
     editor.Init();
     editor.Run();
+    editor.Shutdown();
 
     return 0;
 }

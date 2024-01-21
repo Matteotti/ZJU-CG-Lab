@@ -1,5 +1,7 @@
 #include "MainMenu.h"
 
+#include "Context.h"
+
 #include "Coordinator.h"
 #include "Systems/WindowSystem.h"
 
@@ -22,7 +24,7 @@ void MainMenu::Update()
 
             if (ImGui::MenuItem("Exit"))
             {
-                // send exit signal to Editor
+                gContext._windowSystem->CloseWindow();
             }
 
             ImGui::EndMenu();
@@ -34,24 +36,31 @@ void MainMenu::Update()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("\ueadb Experimental"))
+        if (ImGui::BeginMenu("\ue8b8 Settings"))
         {
-            ImGui::SeparatorText("Frame");
-            ImGui::Text("FPS: %.0f", 1 / gCoordinator.GetSystem<WindowSystem>()->GetDeltaTime());
-
-            ImGui::SeparatorText("Screen Settings");
-            static ImVec4 color = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
-            ImGui::ColorEdit3("Clear Color", (float *)&color);
-            glClearColor(color.x, color.y, color.z, 1.0f);
+            ImGui::SeparatorText("Editor Control");
+            {
+                if (ImGui::Button("Reset layout"))
+                {
+                    gContext._reDockFlag = true;
+                }
+            }
 
             ImGui::SeparatorText("Render Settings");
-            static bool wireframe = false;
-            if (ImGui::Checkbox("Render wireframe", &wireframe))
             {
-                if (wireframe)
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                else
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                static ImVec4 color = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+                ImGui::ColorEdit3("Clear Color", (float *)&color);
+                glClearColor(color.x, color.y, color.z, 1.0f);
+            }
+            {
+                static bool wireframe = false;
+                if (ImGui::Checkbox("Render wireframe", &wireframe))
+                {
+                    if (wireframe)
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                    else
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                }
             }
 
             ImGui::EndMenu();

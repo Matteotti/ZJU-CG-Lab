@@ -22,6 +22,8 @@ void WindowSystem::Init(bool editorMode)
     glfwMakeContextCurrent(_window);
     glfwSwapInterval(0); // 禁用垂直同步
 
+    InitCallbacks();
+
     _isFirstFrame = true;
 }
 
@@ -92,4 +94,101 @@ bool WindowSystem::WindowShouldClose()
 GLFWwindow *WindowSystem::GetWindowHandle()
 {
     return _window;
+}
+
+void WindowSystem::EnableVsync()
+{
+    glfwSwapInterval(1);
+}
+
+void WindowSystem::MaximizeWindow()
+{
+    glfwMaximizeWindow(_window);
+}
+
+void WindowSystem::SetWindowTitle(const std::string &title)
+{
+    glfwSetWindowTitle(_window, title.c_str());
+}
+
+void WindowSystem::CloseWindow()
+{
+    glfwSetWindowShouldClose(_window, true);
+}
+
+void WindowSystem::InitCallbacks()
+{
+    glfwSetWindowUserPointer(_window, this);
+
+    glfwSetCursorPosCallback(_window, [](GLFWwindow *window, double xPos, double yPos) {
+        ((WindowSystem *)glfwGetWindowUserPointer(window))->OnCursorPos(xPos, yPos);
+    });
+    glfwSetKeyCallback(_window, [](GLFWwindow *window, int key, int scanCode, int action, int mods) {
+        ((WindowSystem *)glfwGetWindowUserPointer(window))->OnKey(key, scanCode, action, mods);
+    });
+    glfwSetMouseButtonCallback(_window, [](GLFWwindow *window, int button, int action, int mods) {
+        ((WindowSystem *)glfwGetWindowUserPointer(window))->OnMouseButton(button, action, mods);
+    });
+    glfwSetScrollCallback(_window, [](GLFWwindow *window, double xOffset, double yOffset) {
+        ((WindowSystem *)glfwGetWindowUserPointer(window))->OnScroll(xOffset, yOffset);
+    });
+    glfwSetWindowSizeCallback(_window, [](GLFWwindow *window, int width, int height) {
+        ((WindowSystem *)glfwGetWindowUserPointer(window))->OnWindowSize(width, height);
+    });
+}
+
+void WindowSystem::RegisterOnCursorPosFunc(OnCursorPosFunc func)
+{
+    _onCursorPosVec.push_back(func);
+}
+
+void WindowSystem::RegisterOnKeyFunc(OnKeyFunc func)
+{
+    _onKeyVec.push_back(func);
+}
+
+void WindowSystem::RegisterOnMouseButtonFunc(OnMouseButtonFunc func)
+{
+    _onMouseButtonVec.push_back(func);
+}
+
+void WindowSystem::RegisterOnScrollFunc(OnScrollFunc func)
+{
+    _onScrollVec.push_back(func);
+}
+
+void WindowSystem::RegisterOnWindowSizeFunc(OnWindowSizeFunc func)
+{
+    _onWindowSizeVec.push_back(func);
+}
+
+void WindowSystem::OnCursorPos(double xPos, double yPos)
+{
+    for (auto &fn : _onCursorPosVec)
+        fn(xPos, yPos);
+}
+
+void WindowSystem::OnKey(int key, int scanCode, int action, int mods)
+{
+    for (auto &fn : _onKeyVec)
+        fn(key, scanCode, action, mods);
+}
+
+void WindowSystem::OnMouseButton(int button, int action, int mods)
+{
+    for (auto &fn : _onMouseButtonVec)
+        fn(button, action, mods);
+    ;
+}
+
+void WindowSystem::OnScroll(double xOffset, double yOffset)
+{
+    for (auto &fn : _onScrollVec)
+        fn(xOffset, yOffset);
+}
+
+void WindowSystem::OnWindowSize(int width, int height)
+{
+    for (auto &fn : _onWindowSizeVec)
+        fn(width, height);
 }
