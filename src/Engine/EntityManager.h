@@ -8,11 +8,11 @@ class EntityManager
 public:
     EntityManager();
 
-    Entity CreateEntity();
+    [[nodiscard]] Entity CreateEntity();
     void DestroyEntity(Entity entity);
 
     void SetSignature(Entity entity, Signature signature);
-    Signature GetSignature(Entity entity);
+    [[nodiscard]] Signature GetSignature(Entity entity);
 
 private:
     // Queue of unused entity IDs

@@ -146,7 +146,7 @@ void Editor::Run()
         for (auto &module : _modules)
             module->Update();
 
-        ImGui::ShowDemoWindow();
+        // ImGui::ShowDemoWindow();
 
         gContext._windowSystem->SetDeltaTimeCountMode(gContext._sceneRunning);
 

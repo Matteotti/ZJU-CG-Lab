@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "ComponentManager.h"
+#include "Entity.h"
 #include "EntityManager.h"
 #include "SystemManager.h"
 
@@ -10,11 +11,16 @@ class Coordinator
 public:
     void Init();
 
-    Entity CreateEntity();
+    [[nodiscard]] Entity CreateEntity();
 
     void DestroyEntity(Entity entity);
 
+    [[nodiscard]] Signature GetEntitySignature(Entity entity);
+
     void UpdateSystems(float dt);
+
+    template <typename Tcomp>
+    [[nodiscard]] bool HasComponent(Entity entity);
 
     template <typename T>
     void RegisterComponent();
@@ -42,6 +48,9 @@ public:
 
     template <typename T, typename Tcomp>
     void AddSystemSignature();
+
+    template <typename T>
+    [[nodiscard]] Signature GetSystemSignature();
 
 private:
     std::unique_ptr<ComponentManager> _componentManager;
@@ -115,4 +124,17 @@ template <typename T, typename Tcomp>
 void Coordinator::AddSystemSignature()
 {
     _systemManager->AddSignature<T>(GetComponentType<Tcomp>());
+}
+
+template <typename T>
+Signature Coordinator::GetSystemSignature()
+{
+    return _systemManager->GetSignature<T>();
+}
+
+template <typename Tcomp>
+[[nodiscard]] bool Coordinator::HasComponent(Entity entity)
+{
+    auto compType = _componentManager->GetComponentType<Tcomp>();
+    return _entityManager->GetSignature(entity).test(compType);
 }

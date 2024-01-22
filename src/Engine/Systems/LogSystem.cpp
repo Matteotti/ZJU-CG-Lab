@@ -36,7 +36,7 @@ LogSystem::~LogSystem()
 
 void LogSystem::log(LogLevel level, const char *position, const char *fmt, ...)
 {
-    static char buffer[256]; // POTENTIAL RISK OF OVERFLOW...
+    static char buffer[512]; // POTENTIAL RISK OF OVERFLOW...
     _logBuf.str("");
 
     switch (level)

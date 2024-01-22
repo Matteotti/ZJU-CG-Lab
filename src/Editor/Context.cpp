@@ -5,6 +5,7 @@
 #include "Coordinator.h"
 #include "Entity.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/ResourceSystem.h"
 #include "Systems/WindowSystem.h"
 
 Context gContext;
@@ -14,6 +15,7 @@ void Context::Init()
     // Init engine & get system handles
     _engine.Init(true);
     _renderSystem = gCoordinator.GetSystem<RenderSystem>();
+    _resourceSystem = gCoordinator.GetSystem<ResourceSystem>();
     _windowSystem = gCoordinator.GetSystem<WindowSystem>();
 
     _entities = std::make_shared<std::set<Entity>>();

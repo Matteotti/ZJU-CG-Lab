@@ -43,7 +43,8 @@ void Engine::Init(bool editorMode)
     gCoordinator.RegisterSystem<CollisionSystem>()->Init(editorMode);
     gCoordinator.RegisterSystem<CameraSystem>()->Init(editorMode);
 
-    gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
+    if (!editorMode)
+        gCoordinator.GetSystem<ResourceSystem>()->LoadResource();
 }
 
 void Engine::Run()

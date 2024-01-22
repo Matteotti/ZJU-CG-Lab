@@ -22,6 +22,9 @@ public:
     template <typename T>
     void AddSignature(std::uint8_t newSignature);
 
+    template <typename T>
+    [[nodiscard]] Signature GetSignature();
+
     void EntityDestroyed(Entity entity);
 
     void EntitySignatureChanged(Entity entity, Signature entitySignature);
@@ -86,4 +89,14 @@ void SystemManager::AddSignature(std::uint8_t newSignature)
     assert(_systems.find(typeName) != _systems.end() && "System used before registered.");
 
     _signatures[typeName].set(newSignature);
+}
+
+template <typename T>
+Signature SystemManager::GetSignature()
+{
+    const char *typeName = typeid(T).name();
+
+    assert(_systems.find(typeName) != _systems.end() && "System used before registered.");
+
+    return _signatures[typeName];
 }

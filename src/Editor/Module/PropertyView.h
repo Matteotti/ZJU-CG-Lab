@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Components/Mesh.h"
 #include "Components/Rigidbody.h"
 #include "Components/Texture.h"
 #include "EditorModule.h"
@@ -16,8 +17,10 @@ public:
 
     virtual void Update() override;
 
-    void ViewProp(Entity entity);
-    void ViewProp(Transform &tfComp);
-    void ViewProp(Rigidbody &rbComp);
-    void ViewProp(Texture &rbComp);
+    void ViewPropEntity(Entity entity);
+    void ViewPropTransform(Entity entity);
+    void ViewPropRigidbody(Entity entity);
+    void ViewPropTexture(Entity entity);
+    void ViewPropMesh(Entity entity);
+    void ViewPropShader(Entity entity);
 };

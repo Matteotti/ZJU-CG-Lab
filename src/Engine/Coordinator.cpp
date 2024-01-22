@@ -1,4 +1,5 @@
 #include "Coordinator.h"
+#include "Entity.h"
 
 void Coordinator::Init()
 {
@@ -24,4 +25,9 @@ void Coordinator::DestroyEntity(Entity entity)
 void Coordinator::UpdateSystems(float dt)
 {
     _systemManager->UpdateSystems(dt);
+}
+
+Signature Coordinator::GetEntitySignature(Entity entity)
+{
+    return _entityManager->GetSignature(entity);
 }

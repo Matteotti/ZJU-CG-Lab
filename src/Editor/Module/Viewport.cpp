@@ -49,7 +49,8 @@ void Viewport::ShowOverlay()
 
     ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking |
                                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
-                                   ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+                                   ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav |
+                                   ImGuiWindowFlags_NoMove;
 
     ImGui::SetNextWindowBgAlpha(0.3f);
 

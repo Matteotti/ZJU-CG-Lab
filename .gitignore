@@ -10,3 +10,5 @@ out/
 build/
 bin/
 .cache/
+.VSCodeCounter
+imgui.ini

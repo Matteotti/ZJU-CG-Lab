@@ -1,5 +1,8 @@
 #include "Utils.h"
 
+#include <cstdarg>
+#include <cstring>
+
 #include <imgui/imgui.h>
 
 bool CustomButton(const char *label, const ImVec4 &baseColor)
@@ -13,6 +16,7 @@ bool CustomButton(const char *label, const ImVec4 &baseColor)
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, hoverColor);
     if (ImGui::Button(label))
     {
+        ImGui::PopStyleColor(2);
         return true;
     }
     ImGui::PopStyleColor(2);
@@ -36,8 +40,60 @@ bool CustomButtonConditional(const char *label, const ImVec4 &baseColorFalse, co
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, hoverColor);
     if (ImGui::Button(label))
     {
+        ImGui::PopStyleColor(2);
         return true;
     }
     ImGui::PopStyleColor(2);
     return false;
+}
+
+void CustomText(const char *label, const ImVec4 &color)
+{
+    ImGui::PushStyleColor(ImGuiCol_Text, color);
+    ImGui::TextUnformatted(label);
+    ImGui::PopStyleColor();
+}
+
+void CustomTextConditional(const char *label, const ImVec4 &colorFalse, const ImVec4 &colorTrue, bool condition)
+{
+    auto color = colorFalse;
+    if (condition)
+        color = colorTrue;
+
+    ImGui::PushStyleColor(ImGuiCol_Text, color);
+    ImGui::TextUnformatted(label);
+    ImGui::PopStyleColor();
+}
+
+char *FormatText(const char *fmt, ...)
+{
+    // RISK OF OVERFLOW...
+
+    static char buffer[512];
+
+    std::va_list args;
+    va_start(args, fmt);
+    std::vsprintf(buffer, fmt, args);
+    va_end(args);
+
+    return buffer;
+}
+
+void HelpMarker(const char *desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::BeginItemTooltip())
+    {
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
+void DragDstArea()
+{
+    auto childFlags = ImGuiChildFlags_AutoResizeY;
+    ImGui::BeginChild("DragDstArea", ImGui::GetContentRegionAvail(), childFlags);
+    ImGui::EndChild();
 }

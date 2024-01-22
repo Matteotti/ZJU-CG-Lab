@@ -38,7 +38,7 @@ void MainMenu::Update()
 
         if (ImGui::BeginMenu("\ue8b8 Settings"))
         {
-            ImGui::SeparatorText("Editor Control");
+            ImGui::SeparatorText("Editor");
             {
                 if (ImGui::Button("Reset layout"))
                 {
@@ -46,7 +46,7 @@ void MainMenu::Update()
                 }
             }
 
-            ImGui::SeparatorText("Render Settings");
+            ImGui::SeparatorText("Renderer");
             {
                 static ImVec4 color = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
                 ImGui::ColorEdit3("Clear Color", (float *)&color);

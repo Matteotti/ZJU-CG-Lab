@@ -2,18 +2,16 @@
 
 #include "Context.h"
 #include "EditorSettings.h"
+#include "Utils.h"
 
 #include "Components/Camera.h"
 #include "Components/Rigidbody.h"
 #include "Components/Transform.h"
-
 #include "Coordinator.h"
 #include "Entity.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/ResourceSystem.h"
 #include "Systems/WindowSystem.h"
-
-#include <cstdint>
 
 #include <imgui/imgui.h>
 
@@ -21,24 +19,17 @@ void SceneManager::Update()
 {
     ImGui::Begin(EDITOR_MODULENAME_SCENEMGR);
 
-    ImGui::PushStyleColor(ImGuiCol_Button, {0.0f, 0.5f, 0.0f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.0f, 0.7f, 0.0f, 1.0f});
-
-    if (ImGui::Button("\ue145 Add Entity"))
+    if (CustomButton("\ue145 Add Entity", {0.0f, 0.5f, 0.0f, 1.0f}))
     {
         OnAddEntity();
     }
-    ImGui::PopStyleColor(2);
 
     ImGui::SameLine();
 
-    ImGui::PushStyleColor(ImGuiCol_Button, {0.5f, 0.0f, 0.0f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.7f, 0.0f, 0.0f, 1.0f});
-    if (ImGui::Button("\ue0b8 Clear ALL"))
+    if (CustomButton("\ue0b8 Clear ALL", {0.5f, 0.0f, 0.0f, 1.0f}))
     {
         OnClearAllEntity();
     }
-    ImGui::PopStyleColor(2);
 
     ImGui::SameLine();
     ImGui::SeparatorText("");
@@ -52,16 +43,13 @@ void SceneManager::Update()
         {
             if (gContext._selectedEntity == entity)
             {
-                ImGui::PushStyleColor(ImGuiCol_Button, {0.5f, 0.0f, 0.0f, 1.0f});
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.7f, 0.0f, 0.0f, 1.0f});
-                if (ImGui::Button("\ue5cd"))
+                if (CustomButton("\ue5cd", {0.5f, 0.0f, 0.0f, 1.0f}))
                 {
                     gCoordinator.DestroyEntity(entity);
 
                     gContext._entities->erase(entity);
                     gContext._selectedEntity = UNDEFINED_ENTITY;
                 }
-                ImGui::PopStyleColor(2);
 
                 ImGui::SameLine();
             }
@@ -86,9 +74,11 @@ void SceneManager::OnAddEntity()
 
     auto resSys = gCoordinator.GetSystem<ResourceSystem>();
 
-    resSys->AttachAsset(AssetType::MESH, "cube", newEntity);
-    resSys->AttachAsset(AssetType::SHADER, "default", newEntity);
-    resSys->AttachAsset(AssetType::TEXTURE, "wall", newEntity);
+    /*
+        resSys->AttachAsset(AssetType::MESH, "cube", newEntity);
+        resSys->AttachAsset(AssetType::SHADER, "default", newEntity);
+        resSys->AttachAsset(AssetType::TEXTURE, "wall", newEntity);
+        */
 
     Transform tfComp;
     tfComp.SetPosition({0, 0, 0});
@@ -98,7 +88,6 @@ void SceneManager::OnAddEntity()
 
     Rigidbody rbComp;
     rbComp.SetGravity({0.0f, 0.0f, 0.0f});
-    // rbComp.AddForceAtPosition({1.0f, 0.0f, 0.0f}, {0.0f, 100.0f, 0.0f}, 5.0f);
     gCoordinator.AddComponent(newEntity, rbComp);
 }
 

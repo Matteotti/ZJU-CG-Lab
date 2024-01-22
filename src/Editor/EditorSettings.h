@@ -1,6 +1,6 @@
 #pragma once
 
-#define EDITOR_WINDOW_TITLE "Editor v0.0.0"
+#define EDITOR_WINDOW_TITLE "Editor v0.1.0"
 #define EDITOR_FONT_PATH "assets/fonts/msyh.ttc"
 #define EDITOR_FONT_ICON_PATH "assets/fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf"
 

@@ -1,7 +1,6 @@
 #include "ResourceSystem.h"
 
 #include "Coordinator.h"
-#include "EngineSettings.h"
 #include "Systems/LogSystem.h"
 #include <cassert>
 #include <string>
@@ -28,22 +27,26 @@ void ResourceSystem::Update(float dt)
     ;
 }
 
-void ResourceSystem::LoadResource()
+void ResourceSystem::LoadResource(const std::string &metaPath)
 {
-    if (!fs::exists(ENGINE_ASSET_META_PATH))
+    if (!fs::exists(metaPath))
     {
         LOG_ERROR("META file does not exist!");
         return;
     }
 
-    auto metaRoot = YAML::LoadFile(ENGINE_ASSET_META_PATH);
-    LoadMesh(metaRoot);
-    LoadShader(metaRoot);
-    LoadSound(metaRoot);
-    LoadTexture(metaRoot);
+    fs::path rootPath(metaPath);
+    rootPath = rootPath.parent_path();
+
+    LOG_INFO("Asset Root Path: %s", rootPath.string().c_str());
+
+    auto metaRoot = YAML::LoadFile(metaPath);
+    LoadMesh(rootPath, metaRoot);
+    LoadShader(rootPath, metaRoot);
+    LoadTexture(rootPath, metaRoot);
 }
 
-void ResourceSystem::LoadMesh(YAML::Node &root)
+void ResourceSystem::LoadMesh(const std::filesystem::path &rootPath, YAML::Node &root)
 {
     struct Vertex
     {
@@ -53,7 +56,7 @@ void ResourceSystem::LoadMesh(YAML::Node &root)
     };
 
     auto meshNode = root["mesh"];
-    auto meshPath = fs::path(ENGINE_ASSET_MESH_PATH);
+    auto meshPath = rootPath / ENGINE_ASSET_MESH_PATH;
 
     for (const auto &item : meshNode)
     {
@@ -65,7 +68,7 @@ void ResourceSystem::LoadMesh(YAML::Node &root)
         std::ifstream fin(path);
         if (!fin)
         {
-            LOG_WARNING("Could not open .obj file!");
+            LOG_WARNING("Could not open .obj file! (Path: %s)", path.string().c_str());
             continue;
         }
 
@@ -156,13 +159,13 @@ void ResourceSystem::LoadMesh(YAML::Node &root)
         Mesh meshComp;
         meshComp.SetVertices(VAO, VBO, vertexNum);
         _assetMap.insert({name, _meshes.size()});
-        _meshes.push_back(meshComp);
+        _meshes.push_back({name, meshComp});
 
         LOG_INFO("Loaded MESH <%s>", name.c_str());
     }
 }
 
-void ResourceSystem::LoadShader(YAML::Node &root)
+void ResourceSystem::LoadShader(const std::filesystem::path &rootPath, YAML::Node &root)
 {
     static auto checkCompileErrors = [](GLuint id, const std::string &type) {
         static GLchar infolog[1024];
@@ -189,7 +192,7 @@ void ResourceSystem::LoadShader(YAML::Node &root)
     };
 
     auto shaderNode = root["shader"];
-    auto shaderPath = fs::path(ENGINE_ASSET_SHADER_PATH);
+    auto shaderPath = rootPath / ENGINE_ASSET_SHADER_PATH;
 
     for (const auto &item : shaderNode)
     {
@@ -249,27 +252,16 @@ void ResourceSystem::LoadShader(YAML::Node &root)
         shaderComp.SetProgram(program);
         // INSERT FIRST THEN PUSH_BACK!! (spent 20 minutes debugging this...)
         _assetMap.insert({name, _shaders.size()});
-        _shaders.push_back(shaderComp);
+        _shaders.push_back({name, shaderComp});
 
         LOG_INFO("Loaded SHADER <%s>", name.c_str());
     }
 }
 
-void ResourceSystem::LoadSound(YAML::Node &root)
-{
-    auto soundNode = root["sound"];
-    auto soundPath = fs::path(ENGINE_ASSET_SOUND_PATH);
-
-    for (const auto &item : soundNode)
-    {
-        ;
-    }
-}
-
-void ResourceSystem::LoadTexture(YAML::Node &root)
+void ResourceSystem::LoadTexture(const std::filesystem::path &rootPath, YAML::Node &root)
 {
     auto textureNode = root["texture"];
-    auto texturePath = fs::path(ENGINE_ASSET_TEXTURE_PATH);
+    auto texturePath = rootPath / ENGINE_ASSET_TEXTURE_PATH;
 
     for (const auto &item : textureNode)
     {
@@ -303,13 +295,13 @@ void ResourceSystem::LoadTexture(YAML::Node &root)
             Texture texComp;
             texComp.SetTextureID(textureID);
             _assetMap.insert({name, _textures.size()});
-            _textures.push_back(texComp);
+            _textures.push_back({name, texComp});
 
             LOG_INFO("Loaded TEXTURE <%s>", name.c_str());
         }
         else
         {
-            LOG_WARNING("Failed to load TEXTURE <%s>", name.c_str());
+            LOG_WARNING("Failed to load TEXTURE <%s> (Path: %s)", name.c_str(), path.c_str());
         }
         stbi_image_free(data);
     }
@@ -326,13 +318,13 @@ void ResourceSystem::AttachAsset(AssetType type, const std::string &resName, Ent
     case AssetType::UNDEFINED:
         break;
     case AssetType::MESH:
-        gCoordinator.AddComponent(entity, _meshes[_assetMap[resName]]);
+        gCoordinator.AddComponent(entity, _meshes[_assetMap[resName]].second);
         break;
     case AssetType::SHADER:
-        gCoordinator.AddComponent(entity, _shaders[_assetMap[resName]]);
+        gCoordinator.AddComponent(entity, _shaders[_assetMap[resName]].second);
         break;
     case AssetType::TEXTURE:
-        gCoordinator.AddComponent(entity, _textures[_assetMap[resName]]);
+        gCoordinator.AddComponent(entity, _textures[_assetMap[resName]].second);
         break;
     default:
         break;
