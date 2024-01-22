@@ -1,9 +1,12 @@
 #include "Viewport.h"
 
+#include "Context.h"
 #include "EditorSettings.h"
+#include "Utils.h"
 
 #include "Coordinator.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/WindowSystem.h"
 
 #include <imgui/imgui.h>
 
@@ -31,27 +34,63 @@ void Viewport::Update()
             ImGui::EndTabItem();
         }
 
-        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 8.0f);
-        ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - 64);
-        ImGui::SetCursorPosY(ImGui::GetWindowHeight() / 10);
-
-        ImGui::PushStyleColor(ImGuiCol_Button, {0.2f, 0.2f, 0.2f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.5f, 0.5f, 0.5f, 1.0f});
-        ImGui::Button("\ue037");
-
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, {0.2f, 0.2f, 0.2f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.5f, 0.5f, 0.5f, 1.0f});
-        ImGui::Button("\ue034");
-
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, {0.2f, 0.2f, 0.2f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, {0.5f, 0.5f, 0.5f, 1.0f});
-        ImGui::Button("\ue042");
-        ImGui::PopStyleVar();
-        ImGui::PopStyleColor(6);
-
         ImGui::EndTabBar();
+    }
+
+    ShowOverlay();
+
+    ImGui::End();
+}
+
+void Viewport::ShowOverlay()
+{
+    auto viewportWindowPos = ImGui::GetWindowPos();
+    auto viewportWindowSize = ImGui::GetWindowSize();
+
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking |
+                                   ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
+                                   ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+
+    ImGui::SetNextWindowBgAlpha(0.3f);
+
+    ImGui::Begin("Viewport Overlay", nullptr, windowFlags);
+    ImGui::SetWindowPos({viewportWindowPos.x + viewportWindowSize.x - ImGui::GetWindowSize().x, viewportWindowPos.y});
+
+    // FPS display
+    {
+        static float fpsArr[128];
+        static int fpsArrWriteIdx = 0;
+        auto currentFPS = std::floor(1.0f / gContext._windowSystem->GetDeltaTime());
+        fpsArr[fpsArrWriteIdx] = currentFPS;
+
+        if (fpsArrWriteIdx == 128)
+            fpsArrWriteIdx = 0;
+        else
+            ++fpsArrWriteIdx;
+
+        if (gContext._sceneRunning)
+            ImGui::Text("FPS: %.0f", currentFPS);
+        else
+            ImGui::Text("FPS: N/A");
+
+        ImGui::PlotLines("", fpsArr, IM_ARRAYSIZE(fpsArr));
+    }
+
+    // Scene Control
+    ImGui::SeparatorText("Scene Control");
+    {
+        if (CustomButtonConditional("\ue037", {0.2f, 0.6f, 0.2f, 1.0f}, {0.2f, 0.2f, 0.2f, 1.0f},
+                                    gContext._sceneRunning))
+        {
+            gContext._sceneRunning = true;
+        }
+
+        ImGui::SameLine();
+        if (CustomButtonConditional("\ue034", {0.2f, 0.2f, 0.2f, 1.0f}, {0.6f, 0.2f, 0.2f, 1.0f},
+                                    gContext._sceneRunning))
+        {
+            gContext._sceneRunning = false;
+        }
     }
 
     ImGui::End();

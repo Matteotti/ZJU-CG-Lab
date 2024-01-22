@@ -25,6 +25,7 @@ void WindowSystem::Init(bool editorMode)
     InitCallbacks();
 
     _isFirstFrame = true;
+    _countDeltaTime = true;
 }
 
 void WindowSystem::Shutdown()
@@ -60,6 +61,9 @@ float WindowSystem::CountDeltaTime()
     using tp = std::chrono::time_point<std::chrono::steady_clock>;
     static tp prev;
 
+    if (!_countDeltaTime)
+        return 0.0f;
+
     tp now;
     now = std::chrono::steady_clock::now();
     _deltaTime = 0.9f * _deltaTime +
@@ -78,6 +82,13 @@ float WindowSystem::CountDeltaTime()
 float WindowSystem::GetDeltaTime() const
 {
     return _deltaTime;
+}
+
+void WindowSystem::SetDeltaTimeCountMode(bool mode)
+{
+    if (!mode)
+        _isFirstFrame = true;
+    _countDeltaTime = mode;
 }
 
 void WindowSystem::EndFrame()

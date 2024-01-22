@@ -45,7 +45,7 @@ void SceneManager::Update()
 
     // scene info
     static char entityNameBuf[32];
-    if (ImGui::TreeNode("Main"))
+    if (ImGui::TreeNodeEx("Main", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::PushStyleColor(ImGuiCol_Header, {0.3f, 0.3f, 0.3f, 1.0f});
         for (auto entity : *gContext._entities)

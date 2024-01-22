@@ -32,6 +32,9 @@ void RenderSystem::Shutdown()
 
 void RenderSystem::Update(float dt)
 {
+    auto projection = *_currentSceneCamera->GetProjectionMatrix();
+    auto view = *_currentSceneCamera->GetViewMatrix();
+
     for (auto entity : _entities)
     {
         auto &shader = gCoordinator.GetComponent<Shader>(entity);
@@ -44,8 +47,6 @@ void RenderSystem::Update(float dt)
         // set view & projection according to camera
 
         auto model = transform.GetModelMatrix();
-        auto projection = *_currentSceneCamera->GetProjectionMatrix();
-        auto view = *_currentSceneCamera->GetViewMatrix();
 
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);

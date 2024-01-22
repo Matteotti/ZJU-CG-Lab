@@ -23,6 +23,7 @@ public:
 
     // Editor
     bool _reDockFlag = true;
+    bool _sceneRunning = false;
 
     std::shared_ptr<std::set<Entity>> _entities;
     Entity _selectedEntity = UNDEFINED_ENTITY;

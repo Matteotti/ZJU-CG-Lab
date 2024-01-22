@@ -83,7 +83,7 @@ void Editor::InitTheme()
     style.ItemSpacing = {8, 8};
     style.ItemInnerSpacing = {8, 8};
     style.ScrollbarSize = 16;
-    // style.FrameRounding = 6;
+    style.FrameRounding = 4;
 }
 
 void Editor::DockSpace()
@@ -147,6 +147,8 @@ void Editor::Run()
             module->Update();
 
         ImGui::ShowDemoWindow();
+
+        gContext._windowSystem->SetDeltaTimeCountMode(gContext._sceneRunning);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

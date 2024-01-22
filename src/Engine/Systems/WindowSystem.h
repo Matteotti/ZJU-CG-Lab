@@ -17,6 +17,7 @@ public:
 
     void InitCallbacks();
 
+    void SetDeltaTimeCountMode(bool mode);
     float CountDeltaTime();
     float GetDeltaTime() const;
     void EndFrame();
@@ -51,6 +52,7 @@ public:
 private:
     GLFWwindow *_window;
     bool _isFirstFrame;
+    bool _countDeltaTime;
     float _deltaTime;
 
     std::vector<OnCursorPosFunc> _onCursorPosVec;
