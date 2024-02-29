@@ -1,18 +1,8 @@
-Modern OpenGL 教程：
+This repo was forked from [ZJU-CG-Lab](https://github.com/Matteotti/ZJU-CG-Lab).
 
-[Learn OpenGL, extensive tutorial resource for learning Modern OpenGL](https://learnopengl.com/)
-<br/>
-[主页 - LearnOpenGL CN (learnopengl-cn.github.io)](https://learnopengl-cn.github.io/)
+Currently, the repo could render .obj files, and have several components including Camera, Mesh, Transform, Renderer, Rigidbody, Collider, Light, Matrial, Shader, Texture.
 
-在 glfw + opengl 中使用 imgui
+This is a group assignment, so it's not solely my work. Up until February 29, 2024, all parts related to physics simulation and some of the rendering were written by me. I plan to gradually update this repository from now on.
 
-[Getting Started · ocornut/imgui Wiki (github.com)](https://github.com/ocornut/imgui/wiki/Getting-Started#example-if-you-are-using-glfw--openglwebgl)
+https://github.com/Matteotti/ZJU-CG-Lab/assets/88719766/1988b93a-a560-446a-8840-5012dd9cdc64
 
-imgui wiki
-
-[Home · ocornut/imgui Wiki (github.com)](https://github.com/ocornut/imgui/wiki)
-
-ECS Architecture
-[一文看懂ECS架构 - 知乎 (zhihu.com)]
-<br/>
-(https://zhuanlan.zhihu.com/p/618971664)
